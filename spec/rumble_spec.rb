@@ -30,26 +30,24 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_simple
     html = <<-HTML
-      <html>
-      <head>
-        <title>Rumble Test</title>
-      </head>
-      <body>
+      <form>
         <div id="wrapper">
           <h1>My Site</h1>
         </div>
-      </body>
-      </html>
+        <div class="input">
+          <input type="text" name="value">
+        </div>
+      </form>
     HTML
 
     assert_rumble html do
-      html do
-        head { title "Rumble Test" }
+      form do
+        div.wrapper! do
+          h1 "My Site"
+        end
 
-        body do
-          div.wrapper! do
-            h1 "My Site"
-          end
+        div.input do
+          input type: 'text', name: 'value'
         end
       end
     end
@@ -157,7 +155,7 @@ class TestRumble < MiniTest::Unit::TestCase
   def test_error_general
     assert_raises RuntimeError do
       rumble {
-        html do
+        div do
           raise
         end
       }
