@@ -134,7 +134,11 @@ module Keynote
     end
 
     def rumble_tag(name, sc, content = nil, attrs = nil, &blk)
-      context = @rumble_context ||= Context.new
+      if !@rumble_context
+        raise "Must enclose rumble tags in `rumble { ... }` block"
+      end
+
+      context = @rumble_context
       tag = Tag.new(context, self, name, sc)
       context << tag
       tag.insert(content, attrs, &blk)

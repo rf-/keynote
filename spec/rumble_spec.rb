@@ -11,7 +11,10 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def assert_rumble(html, &blk)
     exp = html.gsub(/(\s+(<)|>\s+)/) { $2 || '>' }
-    res = yield.to_s
+    res = nil
+    rumble {
+      res = yield.to_s
+    }
     assert_equal exp, res
   end
 
@@ -136,22 +139,28 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_error_selfclosing_content
     assert_raises Rumble::Error do
-      br "content"
+      rumble {
+        br "content"
+      }
     end
   end
 
   def test_error_css_proxy_continue
     assert_raises Rumble::Error do
-      p.one("test").two
+      rumble {
+        p.one("test").two
+      }
     end
   end
 
   # The real test here is if @rumble_context is nil in the teardown.
   def test_error_general
     assert_raises RuntimeError do
-      html do
-        raise
-      end
+      rumble {
+        html do
+          raise
+        end
+      }
     end
   end
 end
