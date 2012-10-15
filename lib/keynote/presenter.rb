@@ -2,6 +2,8 @@
 
 module Keynote
   class Presenter
+    include Keynote::Rumble
+
     class << self
       def presents(*objects)
         objects.unshift :view

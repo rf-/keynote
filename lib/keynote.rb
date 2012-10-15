@@ -1,11 +1,10 @@
 # encoding: UTF-8
 
 require "keynote/version"
-
+require "keynote/rumble"
+require "keynote/presenter"
 require "keynote/controller"
 require "keynote/helper"
-require "keynote/presenter"
-
 require "keynote/railtie"
 
 module Keynote
