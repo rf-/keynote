@@ -13,10 +13,6 @@ require 'keynote'
 # Initialize our test app (by Jose Valim: https://gist.github.com/1942658)
 
 class TestApp < Rails::Application
-  routes.draw do
-    get "/hello/world" => "hello#world"
-  end
-
   config.active_support.deprecation = :log
   config.eager_load = false
 
