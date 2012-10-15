@@ -95,11 +95,11 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_capture_raise
     assert_raises RuntimeError do
-      div do
-        rumble do
+      rumble {
+        div do
           raise
         end
-      end
+      }
     end
   end
 
@@ -132,6 +132,12 @@ class TestRumble < MiniTest::Unit::TestCase
   def test_text
     assert_rumble "hello" do
       text "hello"
+    end
+  end
+
+  def test_error_tags_outside_rumble_context
+    assert_raises Rumble::Error do
+      div "content"
     end
   end
 

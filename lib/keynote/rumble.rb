@@ -151,7 +151,7 @@ module Keynote
 
     def rumble_tag(name, sc, content = nil, attrs = nil, &blk)
       if !@rumble_context
-        raise "Must enclose rumble tags in `rumble { ... }` block"
+        raise Rumble::Error, "Must enclose tags in `rumble { ... }` block"
       end
 
       context = @rumble_context
