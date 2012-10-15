@@ -29,6 +29,12 @@ module Keynote
     end
     alias p present
 
+    def capture(*args, &block)
+      # We have to explicitly proxy `#capture` because ActiveSupport puts a
+      # capture method on Kernel.
+      @view.capture(*args, &block)
+    end
+
     def respond_to_missing?(method_name, include_private = true)
       @view.respond_to?(method_name, true)
     end
