@@ -142,7 +142,7 @@ module Keynote
       end
     end
 
-    def rumble
+    def html
       ctx = @rumble_context
       @rumble_context = Context.new
       yield

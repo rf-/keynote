@@ -9,10 +9,10 @@ Rumble = Keynote::Rumble
 class TestRumble < MiniTest::Unit::TestCase
   include Rumble
 
-  def assert_rumble(html, &blk)
-    exp = html.gsub(/(\s+(<)|>\s+)/) { $2 || '>' }
+  def assert_rumble(str, &blk)
+    exp = str.gsub(/(\s+(<)|>\s+)/) { $2 || '>' }
     res = nil
-    rumble {
+    html {
       res = yield.to_s
     }
     assert_equal exp, res
@@ -29,7 +29,7 @@ class TestRumble < MiniTest::Unit::TestCase
   end
 
   def test_simple
-    html = <<-HTML
+    str = <<-HTML
       <form>
         <div id="wrapper">
           <h1>My Site</h1>
@@ -40,7 +40,7 @@ class TestRumble < MiniTest::Unit::TestCase
       </form>
     HTML
 
-    assert_rumble html do
+    assert_rumble str do
       form do
         div.wrapper! do
           h1 "My Site"
@@ -54,29 +54,29 @@ class TestRumble < MiniTest::Unit::TestCase
   end
 
   def test_capture
-    html = <<-HTML
+    str = <<-HTML
       <p>&lt;br&gt;</p>
     HTML
 
-    assert_rumble html do
-      p rumble { br }
+    assert_rumble str do
+      p html { br }
     end
   end
 
   def test_several
-    html = <<-HTML
+    str = <<-HTML
       <p>Hello</p>
       <p>World</p>
     HTML
 
-    assert_rumble html do
+    assert_rumble str do
       p "Hello"
       p "World"
     end
   end
 
   def test_several_capture
-    html = <<-HTML
+    str = <<-HTML
       <div>
         <p>Hello</p>
         <p>Hello</p>
@@ -86,39 +86,39 @@ class TestRumble < MiniTest::Unit::TestCase
       </div>
     HTML
 
-    assert_rumble html do
+    assert_rumble str do
       div do
-        %w[Hello World].map { |x| rumble { p x; p x } } * '|'
+        %w[Hello World].map { |x| html { p x; p x } } * '|'
       end
     end
   end
 
   def test_capture_raise
     assert_raises RuntimeError do
-      rumble {
+      html {
         div do
-          raise
+          html { raise }
         end
       }
     end
   end
 
   def test_escape
-    html = <<-HTML
+    str = <<-HTML
       <p class="&quot;test&quot;">Hello &amp; World</p>
     HTML
 
-    assert_rumble html do
+    assert_rumble str do
       p "Hello & World", :class => '"test"'
     end
   end
 
   def test_multiple_css_classes
-    html = <<-HTML
+    str = <<-HTML
       <p class="one two three"></p>
     HTML
 
-    assert_rumble html do
+    assert_rumble str do
       p.one.two.three
     end
   end
@@ -143,7 +143,7 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_error_selfclosing_content
     assert_raises Rumble::Error do
-      rumble {
+      html {
         br "content"
       }
     end
@@ -151,7 +151,7 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_error_css_proxy_continue
     assert_raises Rumble::Error do
-      rumble {
+      html {
         p.one("test").two
       }
     end
@@ -160,7 +160,7 @@ class TestRumble < MiniTest::Unit::TestCase
   # The real test here is if @rumble_context is nil in the teardown.
   def test_error_general
     assert_raises RuntimeError do
-      rumble {
+      html {
         div do
           raise
         end
