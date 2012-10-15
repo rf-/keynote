@@ -20,6 +20,8 @@ module Keynote
       end
     end
 
+    attr_writer :view
+
     def initialize(view)
       @view = view
     end

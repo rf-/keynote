@@ -6,6 +6,7 @@ require "keynote/presenter"
 require "keynote/controller"
 require "keynote/helper"
 require "keynote/railtie"
+require "keynote/cache"
 
 module Keynote
   class << self
@@ -16,7 +17,9 @@ module Keynote
         name = presenter_name_from_object(objects[0])
       end
 
-      presenter_from_name(name).new(view, *objects)
+      Cache.fetch(name, view, *objects) do
+        presenter_from_name(name).new(view, *objects)
+      end
     end
 
     private
