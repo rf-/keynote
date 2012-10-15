@@ -16,6 +16,7 @@ class TestRumble < MiniTest::Unit::TestCase
       res = yield.to_s
     }
     assert_equal exp, res
+    assert_instance_of ActiveSupport::SafeBuffer, res
   end
 
   def setup
@@ -53,16 +54,6 @@ class TestRumble < MiniTest::Unit::TestCase
     end
   end
 
-  def test_capture
-    str = <<-HTML
-      <p>&lt;br&gt;</p>
-    HTML
-
-    assert_rumble str do
-      p html { br }
-    end
-  end
-
   def test_several
     str = <<-HTML
       <p>Hello</p>
@@ -88,7 +79,7 @@ class TestRumble < MiniTest::Unit::TestCase
 
     assert_rumble str do
       div do
-        %w[Hello World].map { |x| html { p x; p x } } * '|'
+        (%w[Hello World].map { |x| html { p x; p x } } * '|').html_safe
       end
     end
   end
@@ -132,6 +123,46 @@ class TestRumble < MiniTest::Unit::TestCase
   def test_text
     assert_rumble "hello" do
       text "hello"
+    end
+  end
+
+  def test_escaping_unsafe_input
+    str = "<br>"
+
+    assert_rumble "<div>&lt;br&gt;</div>" do
+      div { str }
+    end
+
+    assert_rumble "<div>&lt;br&gt;</div>" do
+      div str
+    end
+
+    assert_rumble "<div>&lt;br&gt;</div>" do
+      div { text { str } }
+    end
+
+    assert_rumble "<div>&lt;br&gt;</div>" do
+      div { text str }
+    end
+  end
+
+  def test_not_escaping_safe_input
+    str = "<br>".html_safe
+
+    assert_rumble "<div><br></div>" do
+      div { str }
+    end
+
+    assert_rumble "<div><br></div>" do
+      div str
+    end
+
+    assert_rumble "<div><br></div>" do
+      div { text { str } }
+    end
+
+    assert_rumble "<div><br></div>" do
+      div { text str }
     end
   end
 

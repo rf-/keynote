@@ -2,8 +2,6 @@
 
 # Rumble is (c) 2011 Magnus Holm (https://github.com/judofyr).
 
-require "cgi"
-
 module Keynote
   module Rumble
     class Error < StandardError; end
@@ -39,9 +37,20 @@ module Keynote
       end
     end
 
+    # We need our own copy of this, the normal Rails html_escape helper, so
+    # that we can access it from inside Tag objects.
+    def self.html_escape(s)
+      s = s.to_s
+      if s.html_safe?
+        s
+      else
+        s.gsub(/[&"'><]/, ERB::Util::HTML_ESCAPE).html_safe
+      end
+    end
+
     class Context < Array
       def to_s
-        join
+        join.html_safe
       end
     end
 
@@ -96,12 +105,12 @@ module Keynote
           @done = :block
           before = @context.size
           res = yield
-          @content = res if @context.size == before
+          @content = Rumble.html_escape(res) if @context.size == before
           @context << "</#{@name}>"
         elsif content
           raise Error, "`#{@name}` is not allowed to have content" if @sc
           @done = true
-          @content = CGI.escape_html(content.to_s)
+          @content = Rumble.html_escape(content)
         elsif attrs
           @done = true
         end
@@ -115,16 +124,20 @@ module Keynote
       def to_ary; nil end
       def to_str; to_s end
 
+      def html_safe?
+        true
+      end
+
       def to_s
         if @instance.rumble_context.eql?(@context)
           @instance.rumble_cleanup
-          @context.join
+          @context.to_s
         else
           @result ||= begin
             res = "<#{@name}#{attrs_to_s}>"
             res << @content if @content
             res << "</#{@name}>" if !@sc && @done != :block
-            res
+            res.html_safe
           end
         end
       end
@@ -134,7 +147,7 @@ module Keynote
       def attrs_to_s
         attributes.inject("") do |res, (name, value)|
           if value
-            value = (value == true) ? name : CGI.escape_html(value.to_s)
+            value = (value == true) ? name : Rumble.html_escape(value)
             res << " #{name}=\"#{value}\""
           end
           res
@@ -171,7 +184,8 @@ module Keynote
     end
 
     def text(str = nil, &blk)
-      str = str ? CGI.escape_html(str.to_s) : blk.call.to_s
+      str = Rumble.html_escape(str || blk.call)
+
       if @rumble_context
         @rumble_context << str
       else
