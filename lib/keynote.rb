@@ -8,8 +8,6 @@ require "keynote/helper"
 require "keynote/railtie"
 require "keynote/cache"
 
-require "keynote/testing/test_unit"
-
 module Keynote
   class << self
     # Create or retrieve a presenter wrapping zero or more objects.

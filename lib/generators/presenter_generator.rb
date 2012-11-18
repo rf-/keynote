@@ -15,26 +15,33 @@ module Rails::Generators
         File.join('app/presenters', class_path, "#{file_name}_presenter.rb")
     end
 
-    def create_spec_file
-      if current_test_framework == :rspec && defined?(RSpec::Rails)
-        template 'rspec.rb',
-          File.join(
-            'spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
-      end
-    end
-
-    def create_test_unit_file
-      if current_test_framework == :test_unit
-        template 'test_unit.rb',
-          File.join(
-            'test/presenters', class_path, "#{file_name}_presenter_test.rb")
+    def create_test_file
+      case Rails.application.config.generators.rails[:test_framework]
+      when :rspec
+        template 'rspec.rb', rspec_path
+      when :test_unit
+        template 'test_unit.rb', test_unit_path
+      when :mini_test
+        if Rails.application.config.generators.mini_test[:spec]
+          template 'mini_test_spec.rb', mini_test_path
+        else
+          template 'mini_test_unit.rb', mini_test_path
+        end
       end
     end
 
     private
 
-    def current_test_framework
-      Rails.application.config.generators.rails[:test_framework]
+    def rspec_path
+      File.join('spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
+    end
+
+    def test_unit_path
+      File.join('test/unit/presenters', class_path, "#{file_name}_presenter_test.rb")
+    end
+
+    def mini_test_path
+      File.join('test/presenters', class_path, "#{file_name}_presenter_test.rb")
     end
 
     def target_list
