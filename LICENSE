@@ -1,7 +1,9 @@
 Copyright (c) 2012 Ryan Fitzgerald
 
-Includes a modified version of Rumble, which is (c) 2011 Magnus Holm
-(http://github.com/judofyr).
+Includes a modified version of Rumble, which is (c) 2011 Magnus Holm.
+
+Some Rails integration code inspired by Draper, which is (c) 2011-2012 Jeff
+Casimir and other contributors.
 
 MIT License
 

@@ -7,6 +7,10 @@ module Keynote
   class Railtie < Rails::Railtie
     config.after_initialize do |app|
       app.config.paths.add 'app/presenters', :eager_load => true
+
+      if defined?(RSpec::Rails) && RSpec.respond_to?(:configure)
+        require 'keynote/testing/rspec'
+      end
     end
 
     ActiveSupport.on_load(:action_view) do
