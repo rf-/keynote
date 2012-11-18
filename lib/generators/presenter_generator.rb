@@ -16,13 +16,26 @@ module Rails::Generators
     end
 
     def create_spec_file
-      if defined?(RSpec::Rails)
+      if current_test_framework == :rspec && defined?(RSpec::Rails)
         template 'rspec.rb',
-          File.join('spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
+          File.join(
+            'spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
+      end
+    end
+
+    def create_test_unit_file
+      if current_test_framework == :test_unit
+        template 'test_unit.rb',
+          File.join(
+            'test/presenters', class_path, "#{file_name}_presenter_test.rb")
       end
     end
 
     private
+
+    def current_test_framework
+      Rails.application.config.generators.rails[:test_framework]
+    end
 
     def target_list
       targets.map { |t| ":#{t}" }.join(', ')

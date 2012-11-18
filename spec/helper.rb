@@ -5,8 +5,11 @@ require 'minitest/autorun'
 require 'mocha'
 
 require 'pry'
+
 require 'rails'
-require 'rails/all'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'rails/test_unit/railtie'
 
 require 'keynote'
 
@@ -22,6 +25,14 @@ end
 class HelloController < ActionController::Base
   def world
     render :text => "Hello world!", :layout => false
+  end
+end
+
+# We have to define this class because it's hard-coded into the definition of
+# ActiveSupport::TestCase, which will load regardless of whether we load
+# ActiveRecord.
+module ActiveRecord
+  class Model
   end
 end
 
