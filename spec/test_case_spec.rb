@@ -1,18 +1,8 @@
 # encoding: UTF-8
 
-class TestCaseSpecPresenter < Keynote::Presenter
-  def generate_div
-    html do
-      div.hi! do
-        link_to '#', 'Hello'
-      end
-    end
-  end
-end
-
-class TestCaseSpecPresenterTest < Keynote::TestCase
+class Keynote::NestedPresenterTest < Keynote::TestCase
   setup do
-    @presenter = TestCaseSpecPresenter.new(view)
+    @presenter = Keynote::NestedPresenter.new(view, :model)
   end
 
   test "presenter has view context" do

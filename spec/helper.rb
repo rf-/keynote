@@ -13,7 +13,7 @@ require 'rails/test_unit/railtie'
 
 require 'keynote'
 
-# Initialize our test app (by Jose Valim: https://gist.github.com/1942658)
+## Initialize our test app (by Jose Valim: https://gist.github.com/1942658)
 
 class TestApp < Rails::Application
   config.active_support.deprecation = :log
@@ -28,6 +28,8 @@ class HelloController < ActionController::Base
   end
 end
 
+TestApp.initialize!
+
 # We have to define this class because it's hard-coded into the definition of
 # ActiveSupport::TestCase, which will load regardless of whether we load
 # ActiveRecord.
@@ -36,4 +38,47 @@ module ActiveRecord
   end
 end
 
-TestApp.initialize!
+## Examples
+
+class EmptyPresenter < Keynote::Presenter
+end
+
+class NormalPresenter < Keynote::Presenter
+  presents :model
+
+  def some_bad_js
+    "<script>alert('pwnt');</script>"
+  end
+
+  def some_bad_html
+    html do
+      div { text some_bad_js }
+      div { some_bad_js }
+      div some_bad_js
+    end
+  end
+end
+
+class Normal
+end
+
+module Keynote
+  class NestedPresenter < Keynote::Presenter
+    presents :model
+
+    def generate_div
+      html do
+        div.hi! do
+          link_to '#', 'Hello'
+        end
+      end
+    end
+  end
+
+  class Nested
+  end
+end
+
+class CombinedPresenter < Keynote::Presenter
+  presents :model_1, :model_2
+end
