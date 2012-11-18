@@ -5,6 +5,25 @@ module Keynote
     include Keynote::Rumble
 
     class << self
+      # Define the names and number of the objects presented by this class.
+      # This replaces the default one-parameter constructor with one that takes
+      # an extra parameter for each presented object.
+      #
+      # @param [Array<Symbol>] objects One symbol for each of the models that
+      #   will be required to instantiate this presenter. Each symbol will be
+      #   used as the accessor and instance variable name for its associated
+      #   parameter, but an object of any class can be given for any parameter.
+      #
+      # @example
+      #   class PostPresenter
+      #     presents :blog_post, :author
+      #   end
+      #
+      #   # In a view
+      #   presenter = p(:post, @some_post, @some_user)
+      #   presenter.blog_post # == @some_post
+      #   presenter.author    # == @some_user
+      #
       def presents(*objects)
         objects.unshift :view
         attr_reader *objects
@@ -20,33 +39,52 @@ module Keynote
       end
     end
 
+    # @private (used by Keynote::Cache to keep the view context up-to-date)
     attr_writer :view
 
-    def initialize(view)
-      @view = view
+    # Create a presenter. The default constructor takes one parameter, but
+    # calling `presents` replaces it with a generated constructor.
+    # @param [ActionView::Base] view_context
+    # @see Keynote::Presenter.presents
+    def initialize(view_context)
+      @view = view_context
     end
 
-    def present(*args)
-      Keynote.present(@view, *args)
+    # Instantiate another presenter.
+    # @see Keynote.present
+    def present(*objects)
+      Keynote.present(@view, *objects)
     end
     alias p present
 
-    def capture(*args, &block)
-      # We have to explicitly proxy `#capture` because ActiveSupport puts a
-      # capture method on Kernel.
-      @view.capture(*args, &block)
-    end
-
+    # @private
     def respond_to_missing?(method_name, include_private = true)
       @view.respond_to?(method_name, true)
     end
 
+    # Presenters proxy unknown method calls to the view context, allowing you
+    # to call `h`, `link_to`, and anything else defined in a helper module.
+    #
+    # @example
+    #   def title_link
+    #     link_to blog_post_url(blog_post) do
+    #       "#{h author.name} &mdash; #{h blog_post.title}".html_safe
+    #     end
+    #   end
     def method_missing(method_name, *args, &block)
       if @view.respond_to?(method_name, true)
         @view.send(method_name, *args, &block)
       else
         super
       end
+    end
+
+    private
+
+    # We have to explicitly proxy `#capture` because ActiveSupport creates a
+    # `Kernel#capture` method.
+    def capture(*args, &block)
+      @view.capture(*args, &block)
     end
   end
 end

@@ -7,6 +7,18 @@ end
 
 class NormalPresenter < Keynote::Presenter
   presents :model
+
+  def some_bad_js
+    "<script>alert('pwnt');</script>"
+  end
+
+  def some_bad_html
+    html do
+      div { text some_bad_js }
+      div { some_bad_js }
+      div some_bad_js
+    end
+  end
 end
 
 class Normal
@@ -47,6 +59,13 @@ describe Keynote do
 
       p.view.must_equal  :view
       p.model.must_equal 'hello'
+    end
+
+    it "should integrate with Rumble" do
+      p  = Keynote.present(:view, model)
+      rx = /<div>&lt;script&gt;alert\(/
+
+      p.some_bad_html.scan(rx).count.must_equal 3
     end
   end
 

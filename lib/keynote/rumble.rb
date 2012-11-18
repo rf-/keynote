@@ -1,12 +1,173 @@
 # encoding: UTF-8
 
-# Rumble is (c) 2011 Magnus Holm (https://github.com/judofyr).
-
 module Keynote
+  # HTML markup in Ruby.
+  #
+  # To invoke Rumble, call the `html` method in a presenter.
+  #
+  # ## 1. Syntax
+  #
+  # There are four basic forms:
+  #
+  # ```ruby
+  # tagname(content)
+  #
+  # tagname(content, attributes)
+  #
+  # tagname do
+  #   content
+  # end
+  #
+  # tagname(attributes) do
+  #   content
+  # end
+  # ```
+  #
+  # Example:
+  #
+  # ``` ruby
+  # html do
+  #   div :id => :content do
+  #     h1 'Hello World', :class => :main
+  #   end
+  # end
+  # ```
+  #
+  # ``` html
+  # <div id="content">
+  #   <h1 class="main">Hello World</h1>
+  # </div>
+  # ```
+  #
+  # ## 2. Element classes and IDs
+  #
+  # You can easily add classes and IDs by hooking methods onto the container:
+  #
+  # ``` ruby
+  # div.content! do
+  #   h1.main 'Hello World'
+  # end
+  # ```
+  #
+  # You can mix and match as you'd like (`div.klass.klass1.id!`), but you can
+  # only provide content and attributes on the *last* call:
+  #
+  # ``` ruby
+  # # This is not valid:
+  # form(:action => :post).world do
+  #   input
+  # end
+  #
+  # # But this is:
+  # form.world(:action => :post) do
+  #   input
+  # end
+  # ```
+  #
+  # ## 3. Text
+  #
+  # Sometimes you need to insert plain text:
+  #
+  # ```ruby
+  # p.author do
+  #   text 'Written by '
+  #   a 'Bluebie', :href => 'http://creativepony.com/'
+  #   br
+  #   text link_to 'Home', '/'
+  # end
+  # ```
+  #
+  # ``` html
+  # <p class="author">
+  #   Written by
+  #   <a href="http://creativepony.com/">Bluebie</a>
+  #   <br>
+  #   <a href="/">Home</a>
+  # </p>
+  # ```
+  #
+  # You can also insert literal text by returning it from a block (or passing
+  # it as a parameter to the non-block form of a tag method):
+  #
+  # ``` ruby
+  # p.author do
+  #   link_to 'Home', '/'
+  # end
+  # ```
+  #
+  # ``` html
+  # <p class="author">
+  #   <a href="/">Home</a>
+  # </p>
+  # ```
+  #
+  # Be aware that Rumble ignores the string in a block if there's other tags
+  # there:
+  #
+  # ``` ruby
+  # div.comment do
+  #   div.author "BitPuffin"
+  #   "<p>Silence!</p>"
+  # end
+  # ```
+  #
+  # ``` html
+  # <div class="comment">
+  #   <div class="author">BitPuffin</div>
+  # </div>
+  # ```
+  #
+  # ## 4. Escaping
+  #
+  # The version of Rumble that's embedded in Keynote follows normal Rails
+  # escaping rules. When text enters Rumble (by returning it from a block,
+  # passing it as a parameter to a tag method, or using the `text` method),
+  # it's escaped if and only if `html_safe?` returns false. That means that
+  # Rails helpers generally don't need special treatment, but strings need to
+  # have `html_safe` called on them to avoid escaping.
+  #
+  # ## 5. In practice
+  #
+  # ``` ruby
+  # class ArticlePresenter < Keynote::Presenter
+  #   presents :article
+  #
+  #   def published_at
+  #     html do
+  #       div.published_at do
+  #         span.date publication_date
+  #         span.time publication_time
+  #       end
+  #     end
+  #   end
+  #
+  #   def publication_date
+  #     article.published_at.strftime("%A, %B %e").squeeze(" ")
+  #   end
+  #
+  #   def publication_time
+  #     article.published_at.strftime("%l:%M%p").delete(" ")
+  #   end
+  # end
+  # ```
+  #
+  # @author Rumble is (c) 2011 Magnus Holm (https://github.com/judofyr).
+  # @author Documentation mostly borrowed from Mab, (c) 2012 Magnus Holm.
+  # @see https://github.com/judofyr/rumble
+  # @see https://github.com/camping/mab
   module Rumble
-    class Error < StandardError; end
-    SELFCLOSING = %w[base meta link hr br param img area input col frame]
+    # A class for exceptions raised by Rumble.
+    class Error < StandardError
+    end
 
+    # A basic set of commonly-used HTML tags. These are included as methods
+    # on all presenters by default.
+    BASIC = %w[a b br button del div em form h1 h2 h3 h4 h5 h6 hr i img input
+      label li link ol optgroup option p pre script select span strong sub sup
+      table tbody td textarea tfoot th thead time tr ul]
+
+    # A more complete set of HTML5 tags. You can use these by calling
+    # `Keynote::Rumble.use_html5_tags(self)` in a presenter's class body.
     COMPLETE = %w[a abbr acronym address applet area article aside audio b base
       basefont bdo big blockquote body br button canvas caption center cite
       code col colgroup command datalist dd del details dfn dir div dl dt em
@@ -17,14 +178,15 @@ module Keynote
       select small source span strike strong style sub summary sup table tbody
       td textarea tfoot th thead time title tr tt u ul var video wbr xmp]
 
-    BASIC = %w[a b br button del div em form h1 h2 h3 h4 h5 h6 hr i img input
-      label li link ol optgroup option p pre script select span strong sub sup
-      table tbody td textarea tfoot th thead time tr ul]
+    # @private
+    SELFCLOSING = %w[base meta link hr br param img area input col frame]
 
+    # @private
     def self.included(base)
       define_tags(base, BASIC)
     end
 
+    # @private
     def self.define_tags(base, tags)
       tags.each do |tag|
         sc = SELFCLOSING.include?(tag).inspect
@@ -39,6 +201,7 @@ module Keynote
 
     # We need our own copy of this, the normal Rails html_escape helper, so
     # that we can access it from inside Tag objects.
+    # @private
     def self.html_escape(s)
       s = s.to_s
       if s.html_safe?
@@ -48,12 +211,14 @@ module Keynote
       end
     end
 
+    # @private
     class Context < Array
       def to_s
         join.html_safe
       end
     end
 
+    # @private
     class Tag
       def initialize(context, instance, name, sc)
         @context = context
@@ -155,12 +320,40 @@ module Keynote
       end
     end
 
+    # Generate HTML using Rumble tag methods. If tag methods are called
+    # outside an `html` block, they'll raise an exception.
     def html
       ctx = @rumble_context
       @rumble_context = Context.new
       yield
       rumble_cleanup(ctx).to_s
     end
+
+    # Generate a text node. This is helpful in situations where an element
+    # contains both text and markup.
+    def text(str = nil, &blk)
+      str = Rumble.html_escape(str || blk.call)
+
+      if @rumble_context
+        @rumble_context << str
+      else
+        str
+      end
+    end
+
+    # @private
+    def rumble_context
+      @rumble_context
+    end
+
+    # @private
+    def rumble_cleanup(value = nil)
+      @rumble_context
+    ensure
+      @rumble_context = value
+    end
+
+    private
 
     def rumble_tag(name, sc, content = nil, attrs = nil, &blk)
       if !@rumble_context
@@ -171,26 +364,6 @@ module Keynote
       tag = Tag.new(context, self, name, sc)
       context << tag
       tag.insert(content, attrs, &blk)
-    end
-
-    def rumble_context
-      @rumble_context
-    end
-
-    def rumble_cleanup(value = nil)
-      @rumble_context
-    ensure
-      @rumble_context = value
-    end
-
-    def text(str = nil, &blk)
-      str = Rumble.html_escape(str || blk.call)
-
-      if @rumble_context
-        @rumble_context << str
-      else
-        str
-      end
     end
   end
 end

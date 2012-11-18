@@ -1,10 +1,23 @@
 # encoding: UTF-8
 
 module Keynote
+  # `Keynote::Cache` memoizes presenter instances, reducing the overhead of
+  # calling `Keynote.present` repeatedly with the same parameters.
   module Cache
   end
 
   class << Cache
+    # Return a cached presenter for the given parameters, or yield and cache
+    # the block's return value for next time.
+    #
+    # The cached presenters are stored in an instance variable on the first of
+    # the given objects, so they'll be garbage-collected when the associated
+    # models go out of scope.
+    #
+    # @param [Symbol] name
+    # @param [ActionView::Base] view
+    # @param [Array] objects
+    # @return [Keynote::Presenter]
     def fetch(name, view, *objects)
       first = objects.shift
 
@@ -38,5 +51,3 @@ module Keynote
     end
   end
 end
-
-

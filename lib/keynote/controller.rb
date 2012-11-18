@@ -1,9 +1,14 @@
 # encoding: UTF-8
 
 module Keynote
+  # `Keynote::Controller` is mixed into `ActionController::Base` and
+  # `ActionMailer::Base`, providing a `present` method for instantiating
+  # presenters.
   module Controller
-    def present(*args)
-      Keynote.present(view_context, *args)
+    # Instantiate a presenter.
+    # @see Keynote.present
+    def present(*objects)
+      Keynote.present(view_context, *objects)
     end
   end
 end
