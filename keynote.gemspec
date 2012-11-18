@@ -16,8 +16,11 @@ Gem::Specification.new do |gem|
   gem.version       = Keynote::VERSION
 
   gem.add_dependency 'rails', '>= 3.0.0'
+
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'mocha'
   gem.add_development_dependency 'pry'
+  gem.add_development_dependency 'redcarpet'
+  gem.add_development_dependency 'yard'
 end
