@@ -58,5 +58,13 @@ module Rails::Generators
         'view'
       end
     end
+
+    if ::Rails.version.to_f < 3.1
+      protected
+      # This methods doesn't exist in Rails 3.0
+      def module_namespacing
+        yield if block_given?
+      end
+    end
   end
 end
