@@ -11,21 +11,21 @@ module Rails::Generators
     source_root File.expand_path('../templates', __FILE__)
 
     def create_presenter_file
-      template 'presenter.rb',
+      template 'keynote_presenter.rb',
         File.join('app/presenters', class_path, "#{file_name}_presenter.rb")
     end
 
     def create_test_file
       case Rails.application.config.generators.rails[:test_framework]
       when :rspec
-        template 'rspec.rb', rspec_path
+        template 'keynote_rspec.rb', rspec_path
       when :test_unit
-        template 'test_unit.rb', test_unit_path
+        template 'keynote_test_unit.rb', test_unit_path
       when :mini_test
         if Rails.application.config.generators.mini_test[:spec]
-          template 'mini_test_spec.rb', mini_test_path
+          template 'keynote_mini_test_spec.rb', mini_test_path
         else
-          template 'mini_test_unit.rb', mini_test_path
+          template 'keynote_mini_test_unit.rb', mini_test_path
         end
       end
     end
@@ -33,15 +33,18 @@ module Rails::Generators
     private
 
     def rspec_path
-      File.join('spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
+      File.join(
+        'spec/presenters', class_path, "#{file_name}_presenter_spec.rb")
     end
 
     def test_unit_path
-      File.join('test/unit/presenters', class_path, "#{file_name}_presenter_test.rb")
+      File.join(
+        'test/unit/presenters', class_path, "#{file_name}_presenter_test.rb")
     end
 
     def mini_test_path
-      File.join('test/presenters', class_path, "#{file_name}_presenter_test.rb")
+      File.join(
+        'test/presenters', class_path, "#{file_name}_presenter_test.rb")
     end
 
     def target_list

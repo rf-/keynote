@@ -1,1 +1,4 @@
---markup markdown --no-private
+--markup markdown
+--no-private
+--exclude lib/generators
+--exclude keynote/testing
