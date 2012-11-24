@@ -1,6 +1,10 @@
 # encoding: UTF-8
 
 module Keynote
+  # Keynote::Presenter is a base class for presenters, objects that encapsulate
+  # view logic.
+  #
+  # @see file:README.md
   class Presenter
     include Keynote::Rumble
 

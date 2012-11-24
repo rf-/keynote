@@ -8,6 +8,10 @@ require "keynote/helper"
 require "keynote/railtie"
 require "keynote/cache"
 
+# Keynote is a library for defining and instantiating presenters,
+# objects that encapsulate view logic.
+#
+# @see file:README.md
 module Keynote
   class << self
     # @return [Boolean] When `use_caching` is enabled, repeatedly invoking
