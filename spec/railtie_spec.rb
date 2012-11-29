@@ -6,13 +6,14 @@ describe Keynote::Railtie do
   let(:controller) { HelloController.new }
   let(:context)    { controller.view_context }
 
-  it "should make the present method available to controllers" do
+  it "should make the present and k methods available to controllers" do
     controller.must_respond_to :present
+    controller.must_respond_to :k
   end
 
-  it "should make the present and p methods available to views" do
+  it "should make the present and k methods available to views" do
     context.must_respond_to :present
-    context.must_respond_to :p
+    context.must_respond_to :k
   end
 
   it "should pass present call from controller to Keynote.present" do

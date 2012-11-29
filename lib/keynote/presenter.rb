@@ -20,7 +20,7 @@ module Keynote
       #   end
       #
       #   # In a view
-      #   presenter = p(:post, @some_post, @some_user)
+      #   presenter = k(:post, @some_post, @some_user)
       #   presenter.blog_post # == @some_post
       #   presenter.author    # == @some_user
       #
@@ -55,7 +55,7 @@ module Keynote
     def present(*objects)
       Keynote.present(@view, *objects)
     end
-    alias p present
+    alias k present
 
     # @private
     def respond_to_missing?(method_name, include_private = true)
