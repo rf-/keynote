@@ -10,6 +10,11 @@ require "keynote/cache"
 
 module Keynote
   class << self
+    # @return [Boolean] When `use_caching` is enabled, repeatedly invoking
+    #   the same presenter with the same parameters will always return the
+    #   same object. This is disabled by default for now.
+    attr_accessor :use_caching
+
     # Create or retrieve a presenter wrapping zero or more objects.
     #
     # The first parameter is a Rails view context, but you'll usually access
@@ -47,7 +52,11 @@ module Keynote
         name = presenter_name_from_object(objects[0])
       end
 
-      Cache.fetch(name, view, *objects) do
+      if Keynote.use_caching
+        Cache.fetch(name, view, *objects) do
+          presenter_from_name(name).new(view, *objects)
+        end
+      else
         presenter_from_name(name).new(view, *objects)
       end
     end
@@ -62,4 +71,6 @@ module Keynote
       "#{name.to_s.camelize}Presenter".constantize
     end
   end
+
+  Keynote.use_caching = false
 end
