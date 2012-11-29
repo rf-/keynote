@@ -4,9 +4,13 @@ require File.expand_path('../lib/keynote/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Ryan Fitzgerald"]
   gem.email         = ["rwfitzge@gmail.com"]
-  gem.description   = %q{}
-  gem.summary       = %q{}
-  gem.homepage      = ""
+  gem.summary       = %q{Flexible presenters for Rails.}
+  gem.description   = %q{
+    A presenter is an object that encapsulates view logic. Like Rails helpers,
+    presenters help you keep complex logic out of your templates. Keynote
+    provides a consistent interface for defining and instantiating presenters.
+  }
+  gem.homepage      = "https://github.com/rf-/keynote"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
