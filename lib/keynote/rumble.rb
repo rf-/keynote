@@ -3,7 +3,7 @@
 module Keynote
   # HTML markup in Ruby.
   #
-  # To invoke Rumble, call the `html` method in a presenter.
+  # To invoke Rumble, call the `build_html` method in a presenter.
   #
   # ## 1. Syntax
   #
@@ -26,7 +26,7 @@ module Keynote
   # Example:
   #
   # ``` ruby
-  # html do
+  # build_html do
   #   div :id => :content do
   #     h1 'Hello World', :class => :main
   #   end
@@ -133,7 +133,7 @@ module Keynote
   #   presents :article
   #
   #   def published_at
-  #     html do
+  #     build_html do
   #       div.published_at do
   #         span.date publication_date
   #         span.time publication_time
@@ -321,8 +321,8 @@ module Keynote
     end
 
     # Generate HTML using Rumble tag methods. If tag methods are called
-    # outside an `html` block, they'll raise an exception.
-    def html
+    # outside a `build_html` block, they'll raise an exception.
+    def build_html
       ctx = @rumble_context
       @rumble_context = Context.new
       yield

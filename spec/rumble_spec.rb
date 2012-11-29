@@ -12,7 +12,7 @@ class TestRumble < MiniTest::Unit::TestCase
   def assert_rumble(str, &blk)
     exp = str.gsub(/(\s+(<)|>\s+)/) { $2 || '>' }
     res = nil
-    html {
+    build_html {
       res = yield.to_s
     }
     assert_equal exp, res
@@ -79,16 +79,16 @@ class TestRumble < MiniTest::Unit::TestCase
 
     assert_rumble str do
       div do
-        (%w[Hello World].map { |x| html { p x; p x } } * '|').html_safe
+        (%w[Hello World].map { |x| build_html { p x; p x } } * '|').html_safe
       end
     end
   end
 
   def test_capture_raise
     assert_raises RuntimeError do
-      html {
+      build_html {
         div do
-          html { raise }
+          build_html { raise }
         end
       }
     end
@@ -174,7 +174,7 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_error_selfclosing_content
     assert_raises Rumble::Error do
-      html {
+      build_html {
         br "content"
       }
     end
@@ -182,7 +182,7 @@ class TestRumble < MiniTest::Unit::TestCase
 
   def test_error_css_proxy_continue
     assert_raises Rumble::Error do
-      html {
+      build_html {
         p.one("test").two
       }
     end
@@ -191,7 +191,7 @@ class TestRumble < MiniTest::Unit::TestCase
   # The real test here is if @rumble_context is nil in the teardown.
   def test_error_general
     assert_raises RuntimeError do
-      html {
+      build_html {
         div do
           raise
         end

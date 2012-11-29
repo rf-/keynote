@@ -51,7 +51,7 @@ class NormalPresenter < Keynote::Presenter
   end
 
   def some_bad_html
-    html do
+    build_html do
       div { text some_bad_js }
       div { some_bad_js }
       div some_bad_js
@@ -67,7 +67,7 @@ module Keynote
     presents :model
 
     def generate_div
-      html do
+      build_html do
         div.hi! do
           link_to '#', 'Hello'
         end
