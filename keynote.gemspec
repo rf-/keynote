@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
     A presenter is an object that encapsulates view logic. Like Rails helpers,
     presenters help you keep complex logic out of your templates. Keynote
     provides a consistent interface for defining and instantiating presenters.
-  }
+  }.gsub(/\s+/, ' ')
   gem.homepage      = "https://github.com/rf-/keynote"
 
   gem.files         = `git ls-files`.split($\)
