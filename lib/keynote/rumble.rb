@@ -199,6 +199,13 @@ module Keynote
       end
     end
 
+    # Define a more complete set of HTML5 tag methods on the given presenter
+    # class.
+    # @param [Keynote::Presenter] base
+    def self.use_html_5_tags(base)
+      define_tags(base, COMPLETE)
+    end
+
     # We need our own copy of this, the normal Rails html_escape helper, so
     # that we can access it from inside Tag objects.
     # @private
