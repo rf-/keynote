@@ -15,6 +15,7 @@ require "keynote/cache"
 module Keynote
   class << self
     # Create or retrieve a presenter wrapping zero or more objects.
+    # If a block is given, yield the presenter into it.
     #
     # The first parameter is a Rails view context, but you'll usually access
     # this method through `Keynote::Helper#present`,
@@ -52,7 +53,9 @@ module Keynote
       end
 
       Cache.fetch(name, view, *objects) do
-        presenter_from_name(name).new(view, *objects)
+        presenter_from_name(name).new(view, *objects).tap do |presenter|
+          yield presenter if block_given?
+        end
       end
     end
 

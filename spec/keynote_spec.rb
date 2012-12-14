@@ -26,6 +26,21 @@ describe Keynote do
       p.model.must_equal 'hello'
     end
 
+    it "should take a block and pass the presenter into it" do
+      m = mock()
+      m.expects(:block_yielded)
+
+      Keynote.present(:view, :normal, 'hello') do |p|
+        m.block_yielded
+
+        p.wont_be_nil
+        p.must_be_instance_of NormalPresenter
+
+        p.view.must_equal  :view
+        p.model.must_equal 'hello'
+      end
+    end
+
     it "should integrate with Rumble" do
       p  = Keynote.present(:view, model)
       rx = /<div>&lt;script&gt;alert\(/

@@ -56,8 +56,8 @@ module Keynote
 
     # Instantiate another presenter.
     # @see Keynote.present
-    def present(*objects)
-      Keynote.present(@view, *objects)
+    def present(*objects, &blk)
+      Keynote.present(@view, *objects, &blk)
     end
     alias k present
 

@@ -7,8 +7,8 @@ module Keynote
   module Controller
     # Instantiate a presenter.
     # @see Keynote.present
-    def present(*objects)
-      Keynote.present(view_context, *objects)
+    def present(*objects, &blk)
+      Keynote.present(view_context, *objects, &blk)
     end
     alias k present
   end
