@@ -26,7 +26,7 @@ module Keynote
     # @see Keynote::Controller#present
     # @see Keynote::Presenter#present
     #
-    # @overload present(*objects)
+    # @overload present(view, *objects)
     #   Return a presenter wrapping the given objects. The type of the
     #   presenter will be inferred from the type of the first object.
     #   @example
