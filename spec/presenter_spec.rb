@@ -62,6 +62,20 @@ describe Keynote::Presenter do
     end
   end
 
+  describe ".use_html5_tags" do
+    it "should add Rumble tags like `small` while preserving existing tags" do
+      presenter = Html5Presenter.new(nil)
+
+      presenter.generate_h3("hi").must_equal "<h3>hi</h3>"
+      proc { presenter.generate_small("uh-oh") }.must_raise NoMethodError
+
+      Html5Presenter.use_html_5_tags
+
+      presenter.generate_h3("hi").must_equal "<h3>hi</h3>"
+      presenter.generate_small("hi").must_equal "<small>hi</small>"
+    end
+  end
+
   describe "#present" do
     it "should pass its view context through to the new presenter" do
       mock = mock()

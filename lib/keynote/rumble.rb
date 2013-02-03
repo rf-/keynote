@@ -167,7 +167,7 @@ module Keynote
       table tbody td textarea tfoot th thead time tr ul]
 
     # A more complete set of HTML5 tags. You can use these by calling
-    # `Keynote::Rumble.use_html5_tags(self)` in a presenter's class body.
+    # `use_html_5_tags` in a presenter's class body.
     COMPLETE = %w[a abbr acronym address applet area article aside audio b base
       basefont bdo big blockquote body br button canvas caption center cite
       code col colgroup command datalist dd del details dfn dir div dl dt em
@@ -199,9 +199,7 @@ module Keynote
       end
     end
 
-    # Define a more complete set of HTML5 tag methods on the given presenter
-    # class.
-    # @param [Keynote::Presenter] base
+    # @private
     def self.use_html_5_tags(base)
       define_tags(base, COMPLETE)
     end

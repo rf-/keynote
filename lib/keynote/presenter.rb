@@ -41,6 +41,13 @@ module Keynote
           end                            # end
         RUBY
       end
+
+      # Define a more complete set of HTML5 tag methods. The extra tags are
+      # listed in {Keynote::Rumble::COMPLETE}.
+      # @param [Keynote::Presenter] base
+      def use_html_5_tags
+        Rumble.use_html_5_tags(self)
+      end
     end
 
     # @private (used by Keynote::Cache to keep the view context up-to-date)
