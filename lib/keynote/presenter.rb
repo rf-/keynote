@@ -9,6 +9,8 @@ module Keynote
     include Keynote::Rumble
 
     class << self
+      attr_writer :object_names
+
       # Define the names and number of the objects presented by this class.
       # This replaces the default one-parameter constructor with one that takes
       # an extra parameter for each presented object.
@@ -29,6 +31,8 @@ module Keynote
       #   presenter.author    # == @some_user
       #
       def presents(*objects)
+        self.object_names = objects.dup
+
         objects.unshift :view
         attr_reader *objects
 
@@ -46,6 +50,14 @@ module Keynote
       # listed in {Keynote::Rumble::COMPLETE}.
       def use_html_5_tags
         Rumble.use_html_5_tags(self)
+      end
+
+      # List the object names this presenter wraps. The default is an empty
+      # array; calling `presents :foo, :bar` in the presenter's class body will
+      # cause `object_names` to return `[:foo, :bar]`.
+      # @return [Array<Symbol>]
+      def object_names
+        @object_names ||= []
       end
     end
 

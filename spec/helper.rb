@@ -82,13 +82,3 @@ end
 class CombinedPresenter < Keynote::Presenter
   presents :model_1, :model_2
 end
-
-class Html5Presenter < Keynote::Presenter
-  def generate_h3(content)
-    build_html { h3 content }
-  end
-
-  def generate_small(content)
-    build_html { small content }
-  end
-end

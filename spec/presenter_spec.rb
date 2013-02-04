@@ -63,16 +63,46 @@ describe Keynote::Presenter do
   end
 
   describe ".use_html5_tags" do
+    let(:klass) do
+      Class.new(TestPresenter) do
+        def generate_h3(content)
+          build_html { h3 content }
+        end
+
+        def generate_small(content)
+          build_html { small content }
+        end
+      end
+    end
+
     it "should add Rumble tags like `small` while preserving existing tags" do
-      presenter = Html5Presenter.new(nil)
+      presenter = klass.new(nil)
 
       presenter.generate_h3("hi").must_equal "<h3>hi</h3>"
       proc { presenter.generate_small("uh-oh") }.must_raise NoMethodError
 
-      Html5Presenter.use_html_5_tags
+      klass.use_html_5_tags
 
       presenter.generate_h3("hi").must_equal "<h3>hi</h3>"
       presenter.generate_small("hi").must_equal "<small>hi</small>"
+    end
+  end
+
+  describe ".object_names" do
+    it "doesn't leak between classes" do
+      c1 = Class.new(Keynote::Presenter)
+      c2 = Class.new(Keynote::Presenter)
+
+      c1.object_names << :foo
+      c1.object_names.must_equal [:foo]
+      c2.object_names.must_equal []
+    end
+
+    it "matches the list of presented objects" do
+      c = Class.new(Keynote::Presenter)
+      c.object_names.must_equal []
+      c.presents :biff, :bam, :pow
+      c.object_names.must_equal [:biff, :bam, :pow]
     end
   end
 
