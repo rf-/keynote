@@ -20,6 +20,9 @@ module Rails::Generators
       when :rspec
         template 'keynote_rspec.rb', rspec_path
       when :test_unit
+        # In Rails 4 this is kind of a weird place to generate tests into.
+        # Unfortunately it isn't really fixable without changing the Rails
+        # test tasks, so that's a TODO.
         template 'keynote_test_unit.rb', test_unit_path
       when :mini_test
         if Rails.application.config.generators.mini_test[:spec]
@@ -49,14 +52,6 @@ module Rails::Generators
 
     def target_list
       targets.map { |t| ":#{t}" }.join(', ')
-    end
-
-    def view_and_target_list
-      if targets.any?
-        ['view', target_list].join(', ')
-      else
-        'view'
-      end
     end
 
     def presenter_name_and_target_list

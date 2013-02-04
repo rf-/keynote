@@ -1,9 +1,12 @@
 # encoding: UTF-8
 
+require "keynote/testing/test_present_method"
+
 module Keynote
   module ExampleGroup
     def self.included(base)
       base.send :include, RSpec::Rails::ViewExampleGroup
+      base.send :include, TestPresentMethod
       base.metadata[:type] = :presenter
     end
   end

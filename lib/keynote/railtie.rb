@@ -6,7 +6,11 @@ module Keynote
   # @private
   class Railtie < Rails::Railtie
     config.after_initialize do |app|
-      app.config.paths.add 'app/presenters', :eager_load => true
+      if ::Rails.version.to_f >= 4
+        app.config.paths.add 'app/presenters'
+      else
+        app.config.paths.add 'app/presenters', :eager_load => true
+      end
 
       if defined?(RSpec::Rails) && RSpec.respond_to?(:configure)
         require 'keynote/testing/rspec'
