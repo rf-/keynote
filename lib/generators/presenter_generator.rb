@@ -59,9 +59,17 @@ module Rails::Generators
       end
     end
 
+    def presenter_name_and_target_list
+      [presenter_name, *target_list].join(', ')
+    end
+
+    def presenter_name
+      class_name.sub(/Presenter$/, '').underscore.to_sym.inspect
+    end
+
     if ::Rails.version.to_f < 3.1
       protected
-      # This methods doesn't exist in Rails 3.0
+      # This method doesn't exist in Rails 3.0
       def module_namespacing
         yield if block_given?
       end

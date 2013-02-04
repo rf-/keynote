@@ -16,7 +16,9 @@ module Keynote
         require 'keynote/testing/minitest_rails'
       end
 
-      require "keynote/testing/test_unit"
+      if !defined?(MiniTest::Rails)
+        require "keynote/testing/test_unit"
+      end
     end
 
     ActiveSupport.on_load(:action_view) do

@@ -100,7 +100,7 @@ describe "generators" do
         must_match /class PostPresenter < Keynote::Presenter/
 
       file_contents('test/presenters/post_presenter_test.rb').
-        must_match /class PostPresenterTest < Keynote::MiniTest::TestCase/
+        must_match /class PostPresenterTest < Keynote::TestCase/
     end
   end
 end

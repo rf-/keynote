@@ -1,8 +1,8 @@
 require 'minitest_helper'
 
-class <%= class_name %>PresenterTest < Keynote::MiniTest::TestCase
+class <%= class_name %>PresenterTest < Keynote::TestCase
   setup do
-    @presenter = <%= class_name %>Presenter.new(<%= view_and_target_list %>)
+    @presenter = present(<%= presenter_name_and_target_list %>)
   end
 
   # test "the truth" do
