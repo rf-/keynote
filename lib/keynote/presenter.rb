@@ -80,6 +80,18 @@ module Keynote
     alias k present
 
     # @private
+    def inspect
+      objects = self.class.object_names
+      render  = proc { |name| "#{name}: #{send(name).inspect}" }
+
+      if objects.any?
+        "#<#{self.class} #{objects.map(&render).join(", ")}>"
+      else
+        "#<#{self.class}>"
+      end
+    end
+
+    # @private
     def respond_to_missing?(method_name, include_private = true)
       @view.respond_to?(method_name, true)
     end

@@ -119,6 +119,25 @@ describe Keynote::Presenter do
     end
   end
 
+  describe "#inspect" do
+    it "includes the class name" do
+      CombinedPresenter.new(:view, :a, :b).inspect.
+        must_match /^#<CombinedPresenter /
+    end
+
+    it "shows .inspect output for each presented object" do
+      c1 = Class.new(Object) { def inspect; "c1"; end }
+      c2 = Class.new(Object) { def inspect; "c2"; end }
+      p  = CombinedPresenter.new(:view, c1.new, c2.new)
+
+      p.inspect.must_equal "#<CombinedPresenter model_1: c1, model_2: c2>"
+    end
+
+    it "shouldn't leave extra padding for zero-arg presenters" do
+      EmptyPresenter.new(:view).inspect.must_equal "#<EmptyPresenter>"
+    end
+  end
+
   describe "#method_missing" do
     it "should pass unknown method calls through to the view" do
       mock = mock()
@@ -154,7 +173,7 @@ describe Keynote::Presenter do
       end
 
       err.wont_be_nil
-      err.message.must_match /#<Keynote::Presenter:/
+      err.message.must_match /#<Keynote::Presenter/
     end
   end
 end
