@@ -7,6 +7,7 @@ module Keynote
   # @see file:README.md
   class Presenter
     include Keynote::Rumble
+    extend  Keynote::Inline
 
     class << self
       attr_writer :object_names
@@ -119,6 +120,12 @@ module Keynote
     # `Kernel#capture` method.
     def capture(*args, &block)
       @view.capture(*args, &block)
+    end
+
+    # We have to make a logger method available so that ActionView::Template
+    # can safely treat a presenter as a view object.
+    def logger
+      Rails.logger
     end
   end
 end
