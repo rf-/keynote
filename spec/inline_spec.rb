@@ -46,6 +46,11 @@ module Keynote
         # <%= locals_from_binding %>
       end
 
+      def error_handling
+        erb
+        # <% raise "UH OH" %>
+      end
+
       def fix_indentation
         slim
         # div.indented_slightly
@@ -98,6 +103,22 @@ module Keynote
       presenter.method_calls.strip.squeeze(" ").must_equal "Local H Local H"
     end
 
+    it "should handle errors relatively gracefully" do
+      begin
+        presenter.error_handling
+      rescue => e
+      end
+
+      e.must_be_instance_of ActionView::Template::Error
+      e.original_exception.must_be_instance_of RuntimeError
+      e.original_exception.message.must_equal "UH OH"
+    end
+
+    it "should remove leading indentation" do
+      presenter.fix_indentation.must_equal \
+        "<div class=\"indented_slightly\">hello</div>"
+    end
+
     it "should escape HTML by default" do
       unescaped = "<script>alert(1);</script>"
       escaped   = unescaped.gsub(/</, "&lt;").gsub(/>/, "&gt;")
@@ -105,11 +126,6 @@ module Keynote
       clean_whitespace(presenter.erb_escaping).must_equal escaped + unescaped
       clean_whitespace(presenter.haml_escaping).must_equal escaped + unescaped
       clean_whitespace(presenter.slim_escaping).must_equal escaped + unescaped
-    end
-
-    it "should remove leading indentation" do
-      presenter.fix_indentation.must_equal \
-        "<div class=\"indented_slightly\">hello</div>"
     end
 
     it "should see updates after the file is reloaded" do
