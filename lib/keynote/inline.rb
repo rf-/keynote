@@ -166,10 +166,31 @@ module Keynote
 
       def read_template(source_file, line)
         result = ""
+
         File.foreach(source_file).drop(line).each do |line|
-          result << (line[COMMENTED_LINE, 1] || break)
+          if line =~ COMMENTED_LINE
+            result << $1
+          else
+            break
+          end
         end
-        result
+
+        unindent result
+      end
+
+      # Borrowed from Pry, which borrowed it from Python.
+      def unindent(text, left_padding = 0)
+        margin = text.scan(/^[ \t]*(?=[^ \t\n])/).inject do |current_margin, next_indent|
+          if next_indent.start_with?(current_margin)
+            current_margin
+          elsif current_margin.start_with?(next_indent)
+            next_indent
+          else
+            ""
+          end
+        end
+
+        text.gsub(/^#{margin}/, ' ' * left_padding)
       end
 
       if Rails::VERSION::MAJOR == 3 && Rails::VERSION::MINOR == 0

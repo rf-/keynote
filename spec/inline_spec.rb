@@ -46,6 +46,12 @@ module Keynote
         # <%= locals_from_binding %>
       end
 
+      def fix_indentation
+        slim
+        # div.indented_slightly
+        #   = "hello"
+      end
+
       def erb_escaping
         erb +
         # <%= "<script>alert(1);</script>" %>
@@ -55,16 +61,16 @@ module Keynote
 
       def slim_escaping
         slim +
-        #= "<script>alert(1);</script>"
+        # = "<script>alert(1);</script>"
         slim
-        #= "<script>alert(1);</script>".html_safe
+        # = "<script>alert(1);</script>".html_safe
       end
 
       def haml_escaping
         haml +
-        #= "<script>alert(1);</script>"
+        # = "<script>alert(1);</script>"
         haml
-        #= "<script>alert(1);</script>".html_safe
+        # = "<script>alert(1);</script>".html_safe
       end
     end
 
@@ -99,6 +105,11 @@ module Keynote
       clean_whitespace(presenter.erb_escaping).must_equal escaped + unescaped
       clean_whitespace(presenter.haml_escaping).must_equal escaped + unescaped
       clean_whitespace(presenter.slim_escaping).must_equal escaped + unescaped
+    end
+
+    it "should remove leading indentation" do
+      presenter.fix_indentation.must_equal \
+        "<div class=\"indented_slightly\">hello</div>"
     end
 
     it "should see updates after the file is reloaded" do

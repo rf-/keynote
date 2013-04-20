@@ -114,18 +114,18 @@ module Keynote
       end
     end
 
+    # We have to make a logger method available so that ActionView::Template
+    # can safely treat a presenter as a view object.
+    def logger
+      Rails.logger
+    end
+
     private
 
     # We have to explicitly proxy `#capture` because ActiveSupport creates a
     # `Kernel#capture` method.
     def capture(*args, &block)
       @view.capture(*args, &block)
-    end
-
-    # We have to make a logger method available so that ActionView::Template
-    # can safely treat a presenter as a view object.
-    def logger
-      Rails.logger
     end
   end
 end
