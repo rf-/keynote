@@ -44,6 +44,21 @@ class MyPresenter < Keynote::Presenter
     #   <p><%= a_local %></p>
     # </div>
   end
+
+  def raw_erb_template
+    source = %{
+      <div class="foobar" id="baz">
+        <p><%= my_string %></p>
+        <p><%= a_local %></p>
+      </div>
+    }
+    template = ActionView::Template.new(
+      source, "raw_erb_template",
+      ActionView::Template.handler_for_extension(:erb),
+      locals: [:a_local]
+    )
+    TESTS.times { template.render(self, a_local: 1000) }
+  end
 end
 
 TESTS = 1_000
@@ -53,4 +68,5 @@ Benchmark.bmbm do |results|
   results.report("rumble") { TESTS.times { presenter.rumble } }
   results.report("erb_hash") { TESTS.times { presenter.erb_hash } }
   results.report("erb_binding") { TESTS.times { presenter.erb_binding } }
+  results.report("raw_erb_template") { presenter.raw_erb_template }
 end
