@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'mocha'
+  gem.add_development_dependency 'mocha', '~> 0.13.3'
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'redcarpet'
   gem.add_development_dependency 'yard'

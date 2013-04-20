@@ -87,6 +87,7 @@ module Keynote
     #   end
     def inline(*formats)
       require "action_view"
+      require "action_view/context"
 
       Array(formats).each do |format|
         define_method format do |locals = {}|
@@ -153,9 +154,7 @@ module Keynote
           source = read_template(source_file, line)
 
           template = ActionView::Template.new(source, cache_key[0],
-            ActionView::Template.handler_for_extension(format),
-            locals: local_names
-          )
+            handler_for_format(format), locals: local_names)
 
           @cache[cache_key] = [template, new_mtime]
         end
@@ -171,6 +170,16 @@ module Keynote
           result << (line[COMMENTED_LINE, 1] || break)
         end
         result
+      end
+
+      if Rails::VERSION::MAJOR == 3 && Rails::VERSION::MINOR == 0
+        def handler_for_format(format)
+          ActionView::Template.handler_class_for_extension(format.to_s)
+        end
+      else
+        def handler_for_format(format)
+          ActionView::Template.handler_for_extension(format.to_s)
+        end
       end
     end
   end

@@ -4,6 +4,7 @@ require "helper"
 require "fileutils"
 require "slim"
 require "haml"
+require "haml/template"
 
 module Keynote
   describe Inline do
