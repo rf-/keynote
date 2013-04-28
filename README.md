@@ -2,7 +2,7 @@
 
 *Flexible presenters for Rails.*
 
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rf-/keynote)
+[![Code Climate](https://codeclimate.com/github/rf-/keynote.png)](https://codeclimate.com/github/rf-/keynote)
 
 A presenter is an object that encapsulates view logic. Like Rails helpers,
 presenters help you keep complex logic out of your templates.
