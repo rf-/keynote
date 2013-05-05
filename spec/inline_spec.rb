@@ -122,10 +122,13 @@ module Keynote
     it "should escape HTML by default" do
       unescaped = "<script>alert(1);</script>"
       escaped   = unescaped.gsub(/</, "&lt;").gsub(/>/, "&gt;")
+      escaped2  = escaped.gsub(/\//, "&#47;") # for Slim w/ Rails > 3.0 (??)
 
       clean_whitespace(presenter.erb_escaping).must_equal escaped + unescaped
       clean_whitespace(presenter.haml_escaping).must_equal escaped + unescaped
-      clean_whitespace(presenter.slim_escaping).must_equal escaped + unescaped
+
+      [escaped + unescaped, escaped2 + unescaped].must_include \
+        clean_whitespace(presenter.slim_escaping)
     end
 
     it "should see updates after the file is reloaded" do
