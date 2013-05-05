@@ -11,10 +11,7 @@ appraise "rails32" do
 end
 
 appraise "rails4" do
-  gem "rails",
-    :git => "git@github.com:rails/rails.git"
-  gem "activerecord-deprecated_finders",
-    :git => "git@github.com:rails/activerecord-deprecated_finders"
-  gem "journey",
-    :git => "git@github.com:rails/journey"
+  gem "rails", "4.0.0rc1"
+  gem "activerecord-deprecated_finders", "~> 1.0.2"
+  gem "journey", "~> 1.0.4"
 end
