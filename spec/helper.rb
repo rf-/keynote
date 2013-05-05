@@ -2,7 +2,8 @@
 
 require 'minitest/spec'
 require 'minitest/autorun'
-require 'mocha'
+require 'minitest/pride'
+require 'mocha/setup'
 
 require 'pry'
 

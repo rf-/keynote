@@ -2,6 +2,7 @@
 
 require "keynote/version"
 require "keynote/rumble"
+require "keynote/inline"
 require "keynote/presenter"
 require "keynote/controller"
 require "keynote/helper"

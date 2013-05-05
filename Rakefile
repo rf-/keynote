@@ -14,4 +14,8 @@ YARD::Rake::YardocTask.new do |t|
   t.files = ['lib/**/*.rb']
 end
 
+task :benchmark do
+  exec "ruby -Ilib spec/benchmarks.rb"
+end
+
 task :default => [:test]
