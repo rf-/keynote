@@ -2,5 +2,5 @@
 
 module Keynote
   # @private
-  VERSION = "0.2.0pre1"
+  VERSION = "0.2.0pre2"
 end
