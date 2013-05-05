@@ -65,6 +65,8 @@ describe Keynote::Presenter do
   describe ".use_html5_tags" do
     let(:klass) do
       Class.new(TestPresenter) do
+        include Keynote::Rumble
+
         def generate_h3(content)
           build_html { h3 content }
         end
