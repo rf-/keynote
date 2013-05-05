@@ -12,3 +12,5 @@ matrix:
   exclude:
     - rvm: 1.9.2
       gemfile: gemfiles/rails4.gemfile
+notifications:
+  email: false
