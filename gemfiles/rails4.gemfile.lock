@@ -39,6 +39,8 @@ GEM
     builder (3.1.4)
     coderay (1.0.9)
     erubis (2.7.0)
+    haml (4.0.2)
+      tilt
     hike (1.2.2)
     i18n (0.6.4)
     journey (1.0.4)
@@ -76,6 +78,9 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.0.4)
     redcarpet (2.2.2)
+    slim (1.0.1)
+      temple (~> 0.3.0)
+      tilt (~> 1.2)
     slop (3.4.4)
     sprockets (2.9.3)
       hike (~> 1.2)
@@ -86,6 +91,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    temple (0.3.5)
     thor (0.18.1)
     thread_safe (0.1.0)
       atomic
@@ -102,11 +108,13 @@ PLATFORMS
 DEPENDENCIES
   activerecord-deprecated_finders (~> 1.0.2)
   appraisal
+  haml
   journey (~> 1.0.4)
   keynote!
   minitest
-  mocha
+  mocha (~> 0.13.3)
   pry
   rails (= 4.0.0rc1)
   redcarpet
+  slim
   yard
