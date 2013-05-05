@@ -7,32 +7,10 @@ module Keynote
   # body of a presenter method. You can use any template language supported by
   # Rails.
   #
-  # ## The `inline` method
-  #
-  # First, you have to declare what template languages you want to use by
-  # calling the {Keynote::Inline#inline} method on a presenter class:
-  #
-  #     class MyPresenter < Keynote::Presenter
-  #       presents :user, :account
-  #       inline :haml
-  #     end
-  #
-  # This defines a `#haml` instance method on the `MyPresenter` class.
-  #
-  # If you want to make inline templates available to all of your presenters,
-  # you can add an initializer like this to your application:
-  #
-  #     class Keynote::Presenter
-  #       inline :erb, :haml, :slim
-  #     end
-  #
-  # This will add `#erb`, `#haml`, and `#slim` instance methods to all of your
-  # presenters.
-  #
   # ## Basic usage
   #
-  # After defining one or more instance methods by calling `inline`, you can
-  # generate HTML by calling one of those methods and immediately following it
+  # After extending the `Keynote::Inline` module in your presenter class, you
+  # can generate HTML by calling the `erb` method and immediately following it
   # with a block of comments containing your template:
   #
   #     def link
@@ -67,6 +45,31 @@ module Keynote
   #       erb x: 1, y: 2
   #       # <%= x + y %>
   #     end
+  #
+  # ## The `inline` method
+  #
+  # If you want to use template languages other than ERB, you have to define
+  # methods for them by calling the {Keynote::Inline#inline} method on a
+  # presenter class:
+  #
+  #     class MyPresenter < Keynote::Presenter
+  #       extend Keynote::Inline
+  #       presents :user, :account
+  #       inline :haml
+  #     end
+  #
+  # This defines a `#haml` instance method on the `MyPresenter` class.
+  #
+  # If you want to make inline templates available to all of your presenters,
+  # you can add an initializer like this to your application:
+  #
+  #     class Keynote::Presenter
+  #       extend Keynote::Inline
+  #       inline :haml, :slim
+  #     end
+  #
+  # This will add `#erb`, `#haml`, and `#slim` instance methods to all of your
+  # presenters.
   module Inline
     # For each template format given as a parameter, add an instance method
     # that can be called to render an inline template in that format. Any
@@ -94,6 +97,12 @@ module Keynote
           Renderer.new(self, locals, caller(1)[0], format).render
         end
       end
+    end
+
+    # Extending `Keynote::Inline` automatically creates an `erb` method on the
+    # base class.
+    def self.extended(base)
+      base.inline :erb
     end
 
     # @private

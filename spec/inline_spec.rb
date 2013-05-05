@@ -16,7 +16,7 @@ module Keynote
 
     class InlineUser < Keynote::Presenter
       extend Keynote::Inline
-      inline :erb, :slim, :haml
+      inline :slim, :haml
 
       def simple_template
         erb
