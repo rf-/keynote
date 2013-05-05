@@ -169,13 +169,13 @@ module Keynote
 
         File.foreach(source_file).drop(line).each do |line|
           if line =~ COMMENTED_LINE
-            result << $1
+            result << $1 << "\n"
           else
             break
           end
         end
 
-        unindent result
+        unindent result.chomp
       end
 
       # Borrowed from Pry, which borrowed it from Python.

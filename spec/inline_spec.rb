@@ -53,8 +53,9 @@ module Keynote
 
       def fix_indentation
         slim
-        # div.indented_slightly
-        #   = "hello"
+        # .indented_slightly
+        #   - (2..4).each do |i|
+        #     ' #{i} times
       end
 
       def erb_escaping
@@ -100,7 +101,7 @@ module Keynote
     end
 
     it "should be able to call other methods from the same object" do
-      presenter.method_calls.strip.squeeze(" ").must_equal "Local H Local H"
+      presenter.method_calls.strip.squeeze(" ").must_equal "Local H\nLocal H"
     end
 
     it "should handle errors relatively gracefully" do
@@ -116,7 +117,7 @@ module Keynote
 
     it "should remove leading indentation" do
       presenter.fix_indentation.must_equal \
-        "<div class=\"indented_slightly\">hello</div>"
+        "<div class=\"indented_slightly\">2 times 3 times 4 times </div>"
     end
 
     it "should escape HTML by default" do
