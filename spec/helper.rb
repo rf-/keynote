@@ -45,7 +45,6 @@ class EmptyPresenter < Keynote::Presenter
 end
 
 class NormalPresenter < Keynote::Presenter
-  include Keynote::Rumble
   presents :model
 
   def some_bad_js
@@ -66,7 +65,6 @@ end
 
 module Keynote
   class NestedPresenter < Keynote::Presenter
-    include Keynote::Rumble
     presents :model
 
     def generate_div

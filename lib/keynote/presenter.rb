@@ -6,6 +6,8 @@ module Keynote
   #
   # @see file:README.md
   class Presenter
+    include Keynote::Rumble
+
     class << self
       attr_writer :object_names
 
@@ -42,6 +44,12 @@ module Keynote
             #{ivar_list} = #{param_list} #   @view, @foo = view, foo
           end                            # end
         RUBY
+      end
+
+      # Define a more complete set of HTML5 tag methods. The extra tags are
+      # listed in {Keynote::Rumble::COMPLETE}.
+      def use_html_5_tags
+        Rumble.use_html_5_tags(self)
       end
 
       # List the object names this presenter wraps. The default is an empty

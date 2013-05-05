@@ -181,7 +181,7 @@ module Keynote
 
     # @private
     def self.included(base)
-      base.extend ClassMethods
+      define_tags(base, BASIC)
     end
 
     # @private
@@ -198,9 +198,8 @@ module Keynote
     end
 
     # @private
-    # Deprecated; use {{Rumble::ClassMethods#use_html_5_tags}} instead.
     def self.use_html_5_tags(base)
-      base.send :include, CompleteTags
+      define_tags(base, COMPLETE)
     end
 
     # We need our own copy of this, the normal Rails html_escape helper, so
@@ -212,21 +211,6 @@ module Keynote
         s
       else
         s.gsub(/[&"'><]/, ERB::Util::HTML_ESCAPE).html_safe
-      end
-    end
-
-    Rumble.define_tags self, BASIC
-
-    # @private
-    module CompleteTags
-      Rumble.define_tags self, COMPLETE
-    end
-
-    module ClassMethods
-      # Define a more complete set of HTML5 tag methods. The extra tags are
-      # listed in {Keynote::Rumble::COMPLETE}.
-      def use_html_5_tags
-        include CompleteTags
       end
     end
 
