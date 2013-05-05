@@ -153,7 +153,7 @@ module Keynote
         if new_mtime != mtime
           source = read_template(source_file, line)
 
-          template = ActionView::Template.new(source, cache_key[0],
+          template = Template.new(source, cache_key[0],
             handler_for_format(format), locals: local_names)
 
           @cache[cache_key] = [template, new_mtime]
@@ -200,6 +200,33 @@ module Keynote
       else
         def handler_for_format(format)
           ActionView::Template.handler_for_extension(format.to_s)
+        end
+      end
+    end
+
+    # @private
+    class Template < ActionView::Template
+      # Older versions of Rails don't have this mutex, but we probably want it,
+      # so let's make sure it's there.
+      def initialize(*)
+        super
+        @compile_mutex = Mutex.new
+      end
+
+      # The only difference between this #compile! and the normal one is that
+      # we call `view.class` instead of `view.singleton_class`, so that the
+      # template method gets defined as an instance method on the presenter
+      # and therefore sticks around between presenter instances.
+      def compile!(view)
+        return if @compiled
+
+        @compile_mutex.synchronize do
+          return if @compiled
+
+          compile(view, view.class)
+
+          @source = nil if @virtual_path
+          @compiled = true
         end
       end
     end

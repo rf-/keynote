@@ -8,6 +8,7 @@ require "keynote"
 require "benchmark"
 
 class MyPresenter < Keynote::Presenter
+  extend Keynote::Inline
   inline :erb
 
   def my_string

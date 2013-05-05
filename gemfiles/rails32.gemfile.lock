@@ -1,7 +1,7 @@
 PATH
   remote: /Users/rfitz/src/keynote
   specs:
-    keynote (0.2.0pre1)
+    keynote (0.2.0pre2)
       rails (>= 3.0.0)
 
 GEM
