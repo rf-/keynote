@@ -1,5 +1,5 @@
 PATH
-  remote: /mnt/code/github/keynote
+  remote: /Users/rfitz/src/keynote
   specs:
     keynote (0.2.0pre1)
       rails (>= 3.0.0)

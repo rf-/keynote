@@ -2,6 +2,7 @@
 
 *Flexible presenters for Rails.*
 
+[![Travis CI](https://api.travis-ci.org/rf-/keynote.png)](https://travis-ci.org/rf-/keynote/builds)
 [![Code Climate](https://codeclimate.com/github/rf-/keynote.png)](https://codeclimate.com/github/rf-/keynote)
 
 A presenter is an object that encapsulates view logic. Like Rails helpers,
