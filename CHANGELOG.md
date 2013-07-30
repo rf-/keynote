@@ -1,11 +1,8 @@
 ## v0.2.0
 * Add `Keynote::Inline`, a module that presenters can extend to enable inline
   templating in any language supported by Rails.
-* Stop including the `Keynote::Rumble` module in presenters by default;
-  presenters that want to use the `build_html` method must explicitly include
-  it.
-* Including `Keynote::Rumble` now provides a `use_html_5_tags` class method
-  that adds a more complete set of Rumble tag methods to the class.
+* Presenters now have a `use_html_5_tags` class method that adds a more
+  complete set of Rumble tag methods to the class.
 * Add `object_names` class method to presenters, returning an array of the
   symbols that have been passed into the `presents` method.
 * Add an implementation of the `present`/`k` method that's available in test
