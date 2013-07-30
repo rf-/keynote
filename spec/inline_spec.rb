@@ -59,24 +59,27 @@ module Keynote
       end
 
       def erb_escaping
-        erb +
+        raw = erb
         # <%= "<script>alert(1);</script>" %>
-        erb
+        escaped = erb
         # <%= "<script>alert(1);</script>".html_safe %>
+        raw + escaped
       end
 
       def slim_escaping
-        slim +
+        raw = slim
         # = "<script>alert(1);</script>"
-        slim
+        escaped = slim
         # = "<script>alert(1);</script>".html_safe
+        raw + escaped
       end
 
       def haml_escaping
-        haml +
+        raw = haml
         # = "<script>alert(1);</script>"
-        haml
+        escaped = haml
         # = "<script>alert(1);</script>".html_safe
+        raw + escaped
       end
     end
 

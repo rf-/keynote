@@ -167,13 +167,13 @@ describe Keynote::Presenter do
       err = nil
 
       begin
-        TestPresenter.new(Object.new).talking(:heads)
+        Keynote::Presenter.new(Object.new).talking(:heads)
       rescue NoMethodError => e
         err = e
       end
 
       err.wont_be_nil
-      err.message.must_match /#<Keynote::Presenter/
+      err.message.must_match /Keynote::Presenter/
     end
   end
 end
