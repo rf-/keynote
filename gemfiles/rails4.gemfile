@@ -2,8 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "rails", "4.0.0rc1"
-gem "activerecord-deprecated_finders", "~> 1.0.2"
-gem "journey", "~> 1.0.4"
+gem "rails", "4.0.0"
 
 gemspec :path=>"../"
