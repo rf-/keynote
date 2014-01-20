@@ -36,6 +36,7 @@ Gem::Specification.new do |gem|
   end
 
   if RbConfig::CONFIG['ruby_install_name'] == 'rbx'
+    gem.add_development_dependency 'racc'
     gem.add_development_dependency 'rubysl'
   end
 end
