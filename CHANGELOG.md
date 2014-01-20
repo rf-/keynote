@@ -1,3 +1,9 @@
+## v0.2.1
+* Update configuration to test across MRI 1.9.2/1.9.3/2.0.0/2.1.0, Rubinius,
+  JRuby, Rails 3.0/3.1/3.2/4.0/4.1.
+* Fix issue #6, in which the order of dependencies in the Gemfile could keep
+  Keynote's RSpec integration from loading correctly.
+
 ## v0.2.0
 * Add `Keynote::Inline`, a module that presenters can extend to enable inline
   templating in any language supported by Rails.
