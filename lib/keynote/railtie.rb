@@ -37,7 +37,7 @@ module Keynote
     end
 
     def self.load_test_integration
-      if defined?(RSpec::Rails) && RSpec.respond_to?(:configure)
+      if defined?(RSpec::Rails)
         require 'keynote/testing/rspec'
       end
 

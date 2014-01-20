@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require "rspec"
 require "keynote/testing/test_present_method"
 
 module Keynote
