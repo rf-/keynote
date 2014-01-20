@@ -4,6 +4,5 @@ source "https://rubygems.org"
 
 gem "rails", "4.1.0.beta1"
 gem "minitest", "~> 5.0"
-gem "keynote", :path=>"../"
 
 gemspec :path=>"../"
