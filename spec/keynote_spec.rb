@@ -3,26 +3,28 @@
 require 'helper'
 
 describe Keynote do
+  let(:view)  { Object.new }
+
   describe "with a normal presenter" do
     let(:model) { Normal.new }
 
     it "should find and instantiate implicitly" do
-      p = Keynote.present(:view, model)
+      p = Keynote.present(view, model)
 
       p.wont_be_nil
       p.must_be_instance_of NormalPresenter
 
-      p.view.must_equal  :view
+      p.view.must_equal  view
       p.model.must_equal model
     end
 
     it "should find and instantiate explicitly" do
-      p = Keynote.present(:view, :normal, 'hello')
+      p = Keynote.present(view, :normal, 'hello')
 
       p.wont_be_nil
       p.must_be_instance_of NormalPresenter
 
-      p.view.must_equal  :view
+      p.view.must_equal  view
       p.model.must_equal 'hello'
     end
 
@@ -30,19 +32,19 @@ describe Keynote do
       m = mock()
       m.expects(:block_yielded)
 
-      Keynote.present(:view, :normal, 'hello') do |p|
+      Keynote.present(view, :normal, 'hello') do |p|
         m.block_yielded
 
         p.wont_be_nil
         p.must_be_instance_of NormalPresenter
 
-        p.view.must_equal  :view
+        p.view.must_equal  view
         p.model.must_equal 'hello'
       end
     end
 
     it "should integrate with Rumble" do
-      p  = Keynote.present(:view, model)
+      p  = Keynote.present(view, model)
       rx = /<div>&lt;script&gt;alert\(/
 
       p.some_bad_html.scan(rx).count.must_equal 3
@@ -53,29 +55,28 @@ describe Keynote do
     let(:model) { Keynote::Nested.new }
 
     it "should find and instantiate implicitly" do
-      p = Keynote.present(:view, model)
+      p = Keynote.present(view, model)
 
       p.wont_be_nil
       p.must_be_instance_of Keynote::NestedPresenter
 
-      p.view.must_equal  :view
+      p.view.must_equal  view
       p.model.must_equal model
     end
 
     it "should find and instantiate explicitly" do
-      p = Keynote.present(:view, :"keynote/nested", 'hello')
+      p = Keynote.present(view, :"keynote/nested", 'hello')
 
       p.wont_be_nil
       p.must_be_instance_of Keynote::NestedPresenter
 
-      p.view.must_equal  :view
+      p.view.must_equal  view
       p.model.must_equal 'hello'
     end
   end
 
   describe "caching" do
     describe "when there is a view context" do
-      let(:view)   { Object.new }
       let(:view_2) { Object.new }
 
       it "should cache based on the models" do

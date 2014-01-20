@@ -25,10 +25,17 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'mocha', '~> 1.0.0'
   gem.add_development_dependency 'pry'
-  gem.add_development_dependency 'redcarpet'
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'yard'
 
   gem.add_development_dependency 'slim'
   gem.add_development_dependency 'haml'
+
+  unless RbConfig::CONFIG['ruby_install_name'] == 'jruby'
+    gem.add_development_dependency 'redcarpet'
+  end
+
+  if RbConfig::CONFIG['ruby_install_name'] == 'rbx'
+    gem.add_development_dependency 'rubysl'
+  end
 end
