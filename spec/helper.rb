@@ -5,8 +5,8 @@ if ENV["COVERAGE"]
   SimpleCov.start
 end
 
-require 'minitest/spec'
 require 'minitest/autorun'
+require 'minitest/spec'
 require 'minitest/pride'
 require 'mocha/setup'
 

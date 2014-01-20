@@ -4,10 +4,14 @@
 
 require 'helper'
 
-Rumble = Keynote::Rumble
+if defined?(Minitest::Test)
+  klass = Minitest::Test
+else
+  klass = MiniTest::Unit::TestCase
+end
 
-class TestRumble < MiniTest::Unit::TestCase
-  include Rumble
+class TestRumble < klass
+  include Keynote::Rumble
 
   def assert_rumble(str, &blk)
     exp = str.gsub(/(\s+(<)|>\s+)/) { $2 || '>' }
@@ -167,13 +171,13 @@ class TestRumble < MiniTest::Unit::TestCase
   end
 
   def test_error_tags_outside_rumble_context
-    assert_raises Rumble::Error do
+    assert_raises Keynote::Rumble::Error do
       div "content"
     end
   end
 
   def test_error_selfclosing_content
-    assert_raises Rumble::Error do
+    assert_raises Keynote::Rumble::Error do
       build_html {
         br "content"
       }
@@ -181,7 +185,7 @@ class TestRumble < MiniTest::Unit::TestCase
   end
 
   def test_error_css_proxy_continue
-    assert_raises Rumble::Error do
+    assert_raises Keynote::Rumble::Error do
       build_html {
         p.one("test").two
       }

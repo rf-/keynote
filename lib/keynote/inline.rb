@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require "action_view"
 require "thread"
 
 module Keynote
@@ -89,7 +90,6 @@ module Keynote
     #     end
     #   end
     def inline(*formats)
-      require "action_view"
       require "action_view/context"
 
       Array(formats).each do |format|
