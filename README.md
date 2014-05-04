@@ -238,9 +238,8 @@ You can run Keynote's tests across all supported versions of Rails as follows:
 
 ``` bash
 $ bundle install
-$ rake appraisal:gemfiles
-$ rake appraisal:install
-$ rake appraisal
+$ bundle exec appraisal install
+$ bundle exec rake appraisal
 ```
 
 Feel free to submit pull requests according to the usual conventions for Ruby
