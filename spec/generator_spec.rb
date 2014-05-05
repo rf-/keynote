@@ -28,26 +28,76 @@ describe "generators" do
     file_contents = File.read(File.join(output_path, path))
   end
 
-  it "should generate a presenter and Test::Unit file" do
-    Rails.application.config.generators do |g|
-      g.test_framework :test_unit, :spec => true
+  describe "when the test_framework is :test_unit" do
+    before do
+      Rails.application.config.generators do |g|
+        g.test_framework :test_unit
+      end
     end
 
-    invoke_generator 'post' do |files|
-      files.must_equal %w(
-        app/presenters/post_presenter.rb
-        test/unit/presenters/post_presenter_test.rb
-      )
+    it "generates a presenter and Test::Unit file" do
+      invoke_generator 'post' do |files|
+        files.must_equal %w(
+          app/presenters/post_presenter.rb
+          test/unit/presenters/post_presenter_test.rb
+        )
 
-      file_contents('app/presenters/post_presenter.rb').
-        must_match /class PostPresenter < Keynote::Presenter/
+        file_contents('app/presenters/post_presenter.rb').
+          must_match /class PostPresenter < Keynote::Presenter/
 
-      file_contents('test/unit/presenters/post_presenter_test.rb').
-        must_match /class PostPresenterTest < Keynote::TestCase/
+        file_contents('test/unit/presenters/post_presenter_test.rb').
+          must_match /class PostPresenterTest < Keynote::TestCase/
+      end
+    end
+
+    it "does not add a 'presents' line" do
+      invoke_generator 'post' do |files|
+        file_contents('app/presenters/post_presenter.rb').
+          wont_match /presents/
+      end
+    end
+
+    it "generates an appropriate present() call" do
+      invoke_generator 'post' do |files|
+        file_contents('test/unit/presenters/post_presenter_test.rb').
+          must_match /present\(:post\)/
+      end
+    end
+
+    describe "when the presenter has one parameter" do
+      it "adds a 'presents' line" do
+        invoke_generator 'post', 'foo' do |files|
+          file_contents('app/presenters/post_presenter.rb').
+            must_match /presents :foo$/
+        end
+      end
+
+      it "generates an appropriate present() call" do
+        invoke_generator 'post', 'foo' do |files|
+          file_contents('test/unit/presenters/post_presenter_test.rb').
+            must_match /present\(:post, :foo\)/
+        end
+      end
+    end
+
+    describe "when the presenter has two parameters" do
+      it "adds a 'presents' line" do
+        invoke_generator 'post', 'foo', 'bar' do |files|
+          file_contents('app/presenters/post_presenter.rb').
+            must_match /presents :foo, :bar$/
+        end
+      end
+
+      it "generates an appropriate present() call" do
+        invoke_generator 'post', 'foo', 'bar' do |files|
+          file_contents('test/unit/presenters/post_presenter_test.rb').
+            must_match /present\(:post, :foo, :bar\)/
+        end
+      end
     end
   end
 
-  it "should generate a presenter and RSpec file" do
+  it "generates a presenter and RSpec file" do
     Rails.application.config.generators do |g|
       g.test_framework :rspec
     end
@@ -68,7 +118,7 @@ describe "generators" do
 
   # Temporary workaround until MT::R supports MT5 and Rails 4.1
   unless Rails::VERSION.to_s.start_with? "4.1.0"
-    it "should generate a presenter and MiniTest::Rails spec file" do
+    it "generates a presenter and MiniTest::Rails spec file" do
       Rails.application.config.generators do |g|
         g.test_framework :mini_test, :spec => true
       end
@@ -87,7 +137,7 @@ describe "generators" do
       end
     end
 
-    it "should generate a presenter and MiniTest::Rails unit file" do
+    it "generates a presenter and MiniTest::Rails unit file" do
       Rails.application.config.generators do |g|
         g.test_framework :mini_test, :spec => false
       end

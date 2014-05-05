@@ -50,16 +50,20 @@ module Rails::Generators
         'test/presenters', class_path, "#{file_name}_presenter_test.rb")
     end
 
-    def target_list
-      targets.map { |t| ":#{t}" }.join(', ')
+    def presenter_name_and_target_list
+      [presenter_name, *target_names].join(', ')
     end
 
-    def presenter_name_and_target_list
-      [presenter_name, *target_list].join(', ')
+    def target_list
+      target_names.join(', ')
     end
 
     def presenter_name
       class_name.sub(/Presenter$/, '').underscore.to_sym.inspect
+    end
+
+    def target_names
+      targets.map { |t| ":#{t}" }
     end
 
     if ::Rails.version.to_f < 3.1
