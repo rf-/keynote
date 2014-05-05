@@ -116,44 +116,41 @@ describe "generators" do
     end
   end
 
-  # Temporary workaround until MT::R supports MT5 and Rails 4.1
-  unless Rails::VERSION.to_s.start_with? "4.1.0"
-    it "generates a presenter and MiniTest::Rails spec file" do
-      Rails.application.config.generators do |g|
-        g.test_framework :mini_test, :spec => true
-      end
-
-      invoke_generator 'post' do |files|
-        files.must_equal %w(
-          app/presenters/post_presenter.rb
-          test/presenters/post_presenter_test.rb
-        )
-
-        file_contents('app/presenters/post_presenter.rb').
-          must_match /class PostPresenter < Keynote::Presenter/
-
-        file_contents('test/presenters/post_presenter_test.rb').
-          must_match /describe PostPresenter do/
-      end
+  it "generates a presenter and MiniTest::Rails spec file" do
+    Rails.application.config.generators do |g|
+      g.test_framework :mini_test, :spec => true
     end
 
-    it "generates a presenter and MiniTest::Rails unit file" do
-      Rails.application.config.generators do |g|
-        g.test_framework :mini_test, :spec => false
-      end
+    invoke_generator 'post' do |files|
+      files.must_equal %w(
+        app/presenters/post_presenter.rb
+        test/presenters/post_presenter_test.rb
+      )
 
-      invoke_generator 'post' do |files|
-        files.must_equal %w(
-          app/presenters/post_presenter.rb
-          test/presenters/post_presenter_test.rb
-        )
+      file_contents('app/presenters/post_presenter.rb').
+        must_match /class PostPresenter < Keynote::Presenter/
 
-        file_contents('app/presenters/post_presenter.rb').
-          must_match /class PostPresenter < Keynote::Presenter/
+      file_contents('test/presenters/post_presenter_test.rb').
+        must_match /describe PostPresenter do/
+    end
+  end
 
-        file_contents('test/presenters/post_presenter_test.rb').
-          must_match /class PostPresenterTest < Keynote::TestCase/
-      end
+  it "generates a presenter and MiniTest::Rails unit file" do
+    Rails.application.config.generators do |g|
+      g.test_framework :mini_test, :spec => false
+    end
+
+    invoke_generator 'post' do |files|
+      files.must_equal %w(
+        app/presenters/post_presenter.rb
+        test/presenters/post_presenter_test.rb
+      )
+
+      file_contents('app/presenters/post_presenter.rb').
+        must_match /class PostPresenter < Keynote::Presenter/
+
+      file_contents('test/presenters/post_presenter_test.rb').
+        must_match /class PostPresenterTest < Keynote::TestCase/
     end
   end
 end
