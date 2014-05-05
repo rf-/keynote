@@ -1,3 +1,8 @@
+## v0.2.2
+* Fix another RSpec integration bug, which happened in cases where the app's
+  Gemfile included rspec-rails but not the rspec gem itself.
+* Fix a bug in the generation of specs for zero-arg presenters.
+
 ## v0.2.1
 * Update configuration to test across MRI 1.9.2/1.9.3/2.0.0/2.1.0, Rubinius,
   JRuby, Rails 3.0/3.1/3.2/4.0/4.1.
