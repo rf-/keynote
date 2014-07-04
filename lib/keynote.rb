@@ -47,7 +47,7 @@ module Keynote
     #   @return [Keynote::Presenter]
     #
     def present(view, *objects)
-      if objects[0].is_a?(Symbol)
+      if objects[0].is_a?(Symbol) || objects[0].is_a?(String)
         name = objects.shift
       else
         name = presenter_name_from_object(objects[0])
