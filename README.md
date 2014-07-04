@@ -48,7 +48,7 @@ a view, helper, controller, or another presenter.
 </div>
 ```
 
-If you pass anything other than a symbol as the first parameter of
+If you pass anything other than a symbol or string as the first parameter of
 `present`/`k`, Keynote will assume you want to instantiate a presenter named
 after the class of that object -- in this case, the model is a `User`, so
 Keynote looks for a class called `UserPresenter`.
