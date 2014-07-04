@@ -42,7 +42,7 @@ module Keynote
     #   @example
     #     present(view, :foo_bar, MyModel.new) # => #<FooBarPresenter:0x0002>
     #   @param [ActionView::Base] view
-    #   @param [Symbol] presenter_name
+    #   @param [Symbol, String] presenter_name
     #   @param [Array] objects
     #   @return [Keynote::Presenter]
     #
