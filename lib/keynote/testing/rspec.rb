@@ -14,7 +14,9 @@ module Keynote
 end
 
 RSpec.configure do |config|
-  config.include Keynote::ExampleGroup,
-    :type => :presenter,
-    :example_group => {:file_path => %r/spec.presenters/}
+  if RSpec::Core::Version::STRING.starts_with?("3")
+    config.include Keynote::ExampleGroup, :type => :presenter, :file_path => %r/spec.presenters/
+  else
+    config.include Keynote::ExampleGroup, :type => :presenter, :example_group => {:file_path => %r/spec.presenters/}
+  end
 end
