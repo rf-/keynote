@@ -65,7 +65,7 @@ describe Keynote do
     end
 
     it "should find and instantiate explicitly" do
-      p = Keynote.present(view, :"keynote/nested", 'hello')
+      p = Keynote.present(view, "keynote/nested", 'hello')
 
       p.wont_be_nil
       p.must_be_instance_of Keynote::NestedPresenter
