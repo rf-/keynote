@@ -227,8 +227,8 @@ Test::Unit or MiniTest::Rails if applicable.
 
 ## Compatibility
 
-Keynote is supported on Rails 3.0, 3.1, 3.2, and 4.0. Keynote presenters are
-testable with Test::Unit, RSpec, and MiniTest::Rails.
+Keynote is supported on Rails 3.0, 3.1, 3.2, 4.0, and 4.1. Keynote presenters
+are testable with Test::Unit, RSpec, and MiniTest::Rails.
 
 If you find problems with any of the above integrations, please open an issue.
 
