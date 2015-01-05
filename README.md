@@ -186,11 +186,9 @@ though:
 
 ### Why not use decorators?
 
-The biggest distinction between Keynote and similar libraries like
-[Draper](https://github.com/drapergem/draper) and
-[DisplayCase](https://github.com/avdi/display-case) is that Keynote
-presenters aren't decorators -- undefined method calls don't
-fall through to an underlying model.
+The biggest distinction between Keynote and similar libraries like [Draper] and
+[DisplayCase] is that Keynote presenters aren't decorators – undefined method
+calls don't fall through to an underlying model.
 
 Applying the Decorator pattern to generating views is a reasonable thing to do.
 However, this practice also has some downsides.
@@ -244,3 +242,6 @@ $ bundle exec rake appraisal
 
 Feel free to submit pull requests according to the usual conventions for Ruby
 projects.
+
+[DisplayCase]: https://github.com/objects-on-rails/display-case
+[Draper]: https://github.com/drapergem/draper
