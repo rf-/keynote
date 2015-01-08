@@ -15,7 +15,10 @@ describe "generators" do
       :destination_root => output_path
 
     assert retval, 'Generator must succeed'
-    yield retval.drop(2)
+
+    output_files = Dir["#{output_path}/**/*.rb"]
+
+    yield output_files.map { |path| path.sub("#{output_path}/", '') }
   ensure
     FileUtils.rm_rf(output_path)
   end

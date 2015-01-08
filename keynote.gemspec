@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Keynote::VERSION
 
-  gem.add_dependency 'rails', '>= 3.0.0'
+  gem.add_dependency 'rails', '>= 3.1.0'
 
   gem.add_development_dependency 'appraisal'
   gem.add_development_dependency 'minitest'

@@ -187,6 +187,10 @@ module Keynote
         unindent result.chomp
       end
 
+      def handler_for_format(format)
+        ActionView::Template.handler_for_extension(format.to_s)
+      end
+
       # Borrowed from Pry, which borrowed it from Python.
       def unindent(text, left_padding = 0)
         margin = text.scan(/^[ \t]*(?=[^ \t\n])/).inject do |current_margin, next_indent|
@@ -201,20 +205,10 @@ module Keynote
 
         text.gsub(/^#{margin}/, ' ' * left_padding)
       end
-
-      if Rails::VERSION::MAJOR == 3 && Rails::VERSION::MINOR == 0
-        def handler_for_format(format)
-          ActionView::Template.handler_class_for_extension(format.to_s)
-        end
-      else
-        def handler_for_format(format)
-          ActionView::Template.handler_for_extension(format.to_s)
-        end
-      end
     end
 
     # @private
-    class Template < ActionView::Template
+    class TemplateFor41AndLower < ActionView::Template
       # Older versions of Rails don't have this mutex, but we probably want it,
       # so let's make sure it's there.
       def initialize(*)
@@ -238,6 +232,34 @@ module Keynote
           @compiled = true
         end
       end
+    end
+
+    # @private
+    class TemplateFor42AndHigher < ActionView::Template
+      # The only difference between this #compile! and the normal one is that
+      # we call `view.class` instead of `view.singleton_class`, so that the
+      # template method gets defined as an instance method on the presenter
+      # and therefore sticks around between presenter instances.
+      def compile!(view)
+        return if @compiled
+
+        @compile_mutex.synchronize do
+          return if @compiled
+
+          compile(view.class)
+
+          @source = nil if @virtual_path
+          @compiled = true
+        end
+      end
+    end
+
+    if Rails.version.to_f < 4.2
+      # @private
+      Template = TemplateFor41AndLower
+    else
+      # @private
+      Template = TemplateFor42AndHigher
     end
   end
 end

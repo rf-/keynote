@@ -1,22 +1,15 @@
 language: ruby
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
   - 2.1.0
   - rbx-2
   - jruby-19mode
 gemfile:
-  - gemfiles/rails30.gemfile
   - gemfiles/rails31.gemfile
   - gemfiles/rails32.gemfile
   - gemfiles/rails40.gemfile
   - gemfiles/rails41.gemfile
-matrix:
-  exclude:
-    - rvm: 1.9.2
-      gemfile: gemfiles/rails40.gemfile
-    - rvm: 1.9.2
-      gemfile: gemfiles/rails41.gemfile
+  - gemfiles/rails42.gemfile
 notifications:
   email: false

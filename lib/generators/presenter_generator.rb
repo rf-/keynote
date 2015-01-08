@@ -65,13 +65,5 @@ module Rails::Generators
     def target_names
       targets.map { |t| ":#{t}" }
     end
-
-    if ::Rails.version.to_f < 3.1
-      protected
-      # This method doesn't exist in Rails 3.0
-      def module_namespacing
-        yield if block_given?
-      end
-    end
   end
 end
