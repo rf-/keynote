@@ -1,11 +1,17 @@
+## v0.3.0
+* Drop support for Rails 3.0 and Ruby 1.9.2; add support for Rails 4.2.
+* Drop support for MiniTest::Rails versions older than 2.0; add support for 2.0
+  and higher. (@kirs)
+
 ## v0.2.3
 * Allow user to pass the string version of the presenter name into
   `Keynote.present` as an alternative to passing a symbol. This makes it less
   awkward to use namespaced presenters, but it does remove the possibility of
   defining a `StringPresenter` and using it with code like
   `k('some string').format_as_markdown`. It seems unlikely that anyone is
-  actually doing that though.
+  actually doing that though. (@outpunk)
 * Update RSpec integration to not print deprecation warnings with RSpec 3.
+  (@DarthSim)
 
 ## v0.2.2
 * Fix another RSpec integration bug, which happened in cases where the app's
