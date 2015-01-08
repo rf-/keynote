@@ -18,7 +18,7 @@ describe "generators" do
 
     output_files = Dir["#{output_path}/**/*.rb"]
 
-    yield output_files.map { |path| path.sub("#{output_path}/", '') }
+    yield output_files.map { |path| path.sub("#{output_path}/", '') }.sort
   ensure
     FileUtils.rm_rf(output_path)
   end
