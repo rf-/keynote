@@ -34,10 +34,4 @@ Gem::Specification.new do |gem|
   unless RbConfig::CONFIG['ruby_install_name'] == 'jruby'
     gem.add_development_dependency 'redcarpet'
   end
-
-  if RbConfig::CONFIG['ruby_install_name'] == 'rbx'
-    gem.add_development_dependency 'racc'
-    gem.add_development_dependency 'rubysl'
-    gem.add_development_dependency 'rubysl-test-unit'
-  end
 end
