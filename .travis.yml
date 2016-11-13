@@ -11,5 +11,21 @@ gemfile:
   - gemfiles/rails41.gemfile
   - gemfiles/rails42.gemfile
   - gemfiles/rails50.gemfile
+matrix:
+  exclude:
+    - rvm: 2.2.5
+      gemfile: gemfiles/rails31.gemfile
+    - rvm: 2.2.5
+      gemfile: gemfiles/rails32.gemfile
+    - rvm: 2.3.1
+      gemfile: gemfiles/rails31.gemfile
+    - rvm: 2.3.1
+      gemfile: gemfiles/rails32.gemfile
+    - rvm: jruby-9.1.5.0
+      gemfile: gemfiles/rails31.gemfile
+    - rvm: jruby-9.1.5.0
+      gemfile: gemfiles/rails32.gemfile
+    - rvm: 2.1.9
+      gemfile: gemfiles/rails50.gemfile
 notifications:
   email: false
