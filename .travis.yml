@@ -1,31 +1,9 @@
-language: ruby
-rvm:
-  - 2.1.9
-  - 2.2.5
-  - 2.3.1
-  - jruby-9.1.5.0
-gemfile:
-  - gemfiles/rails31.gemfile
-  - gemfiles/rails32.gemfile
-  - gemfiles/rails40.gemfile
-  - gemfiles/rails41.gemfile
-  - gemfiles/rails42.gemfile
-  - gemfiles/rails50.gemfile
-matrix:
-  exclude:
-    - rvm: 2.2.5
-      gemfile: gemfiles/rails31.gemfile
-    - rvm: 2.2.5
-      gemfile: gemfiles/rails32.gemfile
-    - rvm: 2.3.1
-      gemfile: gemfiles/rails31.gemfile
-    - rvm: 2.3.1
-      gemfile: gemfiles/rails32.gemfile
-    - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/rails31.gemfile
-    - rvm: jruby-9.1.5.0
-      gemfile: gemfiles/rails32.gemfile
-    - rvm: 2.1.9
-      gemfile: gemfiles/rails50.gemfile
+sudo: required
+services:
+  - docker
+before_install:
+  - wget https://github.com/rf-/roadshow/releases/download/v1.0.0/roadshow-linux64
+script:
+  - ./roadshow-linux64 run
 notifications:
   email: false

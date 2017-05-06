@@ -225,23 +225,32 @@ Test::Unit or MiniTest::Rails if applicable.
 
 ## Compatibility
 
-Keynote is supported on Rails 3.1, 3.2, 4.0, 4.1, and 4.2. Keynote presenters
-are testable with Test::Unit, RSpec, and MiniTest::Rails (>= 2.0).
+Keynote is supported on Rails 3.1 through 5.1. Keynote presenters are testable
+with Test::Unit, RSpec, and MiniTest::Rails (>= 2.0).
 
 If you find problems with any of the above integrations, please open an issue.
 
 ## Development
 
-You can run Keynote's tests across all supported versions of Rails as follows:
+This repo uses [Roadshow] to generate a [Docker Compose] file for each
+supported version of Rails (with a compatible version of Ruby for each one).
 
-``` bash
-$ bundle install
-$ bundle exec appraisal install
-$ bundle exec rake appraisal
+To run specs across all versions, you can either [get the Roadshow tool] and
+run `roadshow run`, or use Docker Compose directly:
+
 ```
+$ for fn in scenarios/*.docker-compose-yml; do docker-compose -f $fn run --rm scenario; done
+```
+
+To update the set of scenarios, edit `scenarios.yml` and run `roadshow
+generate`, although the Gemfiles in the `scenarios` directory need to be
+maintained manually.
 
 Feel free to submit pull requests according to the usual conventions for Ruby
 projects.
 
 [DisplayCase]: https://github.com/objects-on-rails/display-case
 [Draper]: https://github.com/drapergem/draper
+[Roadshow]: https://github.com/rf-/roadshow
+[Docker Compose]: https://docs.docker.com/compose/
+[get the Roadshow tool]: https://github.com/rf-/roadshow/releases
