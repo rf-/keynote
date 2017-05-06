@@ -114,8 +114,14 @@ module Keynote
       end
 
       e.must_be_instance_of ActionView::Template::Error
-      e.original_exception.must_be_instance_of RuntimeError
-      e.original_exception.message.must_equal "UH OH"
+
+      if e.respond_to?(:original_exception)
+        e.original_exception.must_be_instance_of RuntimeError
+        e.original_exception.message.must_equal "UH OH"
+      else
+        e.cause.must_be_instance_of RuntimeError
+        e.cause.message.must_equal "UH OH"
+      end
     end
 
     it "should remove leading indentation" do
