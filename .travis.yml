@@ -3,6 +3,8 @@ services:
   - docker
 before_install:
   - wget https://github.com/rf-/roadshow/releases/download/v1.0.0/roadshow-linux64
+  - chmod +x roadshow-linux64
+install: "true" # disable default `bundle install`
 script:
   - ./roadshow-linux64 run
 notifications:
