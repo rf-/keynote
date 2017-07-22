@@ -28,7 +28,7 @@ describe "generators" do
   end
 
   def file_contents(path)
-    file_contents = File.read(File.join(output_path, path))
+    File.read(File.join(output_path, path))
   end
 
   describe "when the test_framework is :test_unit" do
@@ -46,24 +46,24 @@ describe "generators" do
         )
 
         file_contents('app/presenters/post_presenter.rb').
-          must_match /class PostPresenter < Keynote::Presenter/
+          must_match(/class PostPresenter < Keynote::Presenter/)
 
         file_contents('test/unit/presenters/post_presenter_test.rb').
-          must_match /class PostPresenterTest < Keynote::TestCase/
+          must_match(/class PostPresenterTest < Keynote::TestCase/)
       end
     end
 
     it "does not add a 'presents' line" do
       invoke_generator 'post' do |files|
         file_contents('app/presenters/post_presenter.rb').
-          wont_match /presents/
+          wont_match(/presents/)
       end
     end
 
     it "generates an appropriate present() call" do
       invoke_generator 'post' do |files|
         file_contents('test/unit/presenters/post_presenter_test.rb').
-          must_match /present\(:post\)/
+          must_match(/present\(:post\)/)
       end
     end
 
@@ -71,14 +71,14 @@ describe "generators" do
       it "adds a 'presents' line" do
         invoke_generator 'post', 'foo' do |files|
           file_contents('app/presenters/post_presenter.rb').
-            must_match /presents :foo$/
+            must_match(/presents :foo$/)
         end
       end
 
       it "generates an appropriate present() call" do
         invoke_generator 'post', 'foo' do |files|
           file_contents('test/unit/presenters/post_presenter_test.rb').
-            must_match /present\(:post, :foo\)/
+            must_match(/present\(:post, :foo\)/)
         end
       end
     end
@@ -87,14 +87,14 @@ describe "generators" do
       it "adds a 'presents' line" do
         invoke_generator 'post', 'foo', 'bar' do |files|
           file_contents('app/presenters/post_presenter.rb').
-            must_match /presents :foo, :bar$/
+            must_match(/presents :foo, :bar$/)
         end
       end
 
       it "generates an appropriate present() call" do
         invoke_generator 'post', 'foo', 'bar' do |files|
           file_contents('test/unit/presenters/post_presenter_test.rb').
-            must_match /present\(:post, :foo, :bar\)/
+            must_match(/present\(:post, :foo, :bar\)/)
         end
       end
     end
@@ -112,10 +112,10 @@ describe "generators" do
       )
 
       file_contents('app/presenters/post_presenter.rb').
-        must_match /class PostPresenter < Keynote::Presenter/
+        must_match(/class PostPresenter < Keynote::Presenter/)
 
       file_contents('spec/presenters/post_presenter_spec.rb').
-        must_match /describe PostPresenter do/
+        must_match(/describe PostPresenter do/)
     end
   end
 
@@ -131,10 +131,10 @@ describe "generators" do
       )
 
       file_contents('app/presenters/post_presenter.rb').
-        must_match /class PostPresenter < Keynote::Presenter/
+        must_match(/class PostPresenter < Keynote::Presenter/)
 
       file_contents('test/presenters/post_presenter_test.rb').
-        must_match /describe PostPresenter do/
+        must_match(/describe PostPresenter do/)
     end
   end
 
@@ -150,10 +150,10 @@ describe "generators" do
       )
 
       file_contents('app/presenters/post_presenter.rb').
-        must_match /class PostPresenter < Keynote::Presenter/
+        must_match(/class PostPresenter < Keynote::Presenter/)
 
       file_contents('test/presenters/post_presenter_test.rb').
-        must_match /class PostPresenterTest < Keynote::TestCase/
+        must_match(/class PostPresenterTest < Keynote::TestCase/)
     end
   end
 end

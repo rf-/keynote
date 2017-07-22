@@ -228,6 +228,7 @@ module Keynote
         @instance = instance
         @name = name
         @sc = sc
+        @done, @content = nil
       end
 
       def attributes
@@ -326,7 +327,9 @@ module Keynote
     # Generate HTML using Rumble tag methods. If tag methods are called
     # outside a `build_html` block, they'll raise an exception.
     def build_html
-      ctx = @rumble_context
+      if defined?(@rumble_context)
+        ctx = @rumble_context
+      end
       @rumble_context = Context.new
       yield
       rumble_cleanup(ctx).to_s
@@ -337,7 +340,7 @@ module Keynote
     def text(str = nil, &blk)
       str = Rumble.html_escape(str || blk.call)
 
-      if @rumble_context
+      if defined?(@rumble_context) && @rumble_context
         @rumble_context << str
       else
         str
@@ -346,12 +349,12 @@ module Keynote
 
     # @private
     def rumble_context
-      @rumble_context
+      defined?(@rumble_context) ? @rumble_context : nil
     end
 
     # @private
     def rumble_cleanup(value = nil)
-      @rumble_context
+      defined?(@rumble_context) ? @rumble_context : nil
     ensure
       @rumble_context = value
     end
@@ -359,7 +362,7 @@ module Keynote
     private
 
     def rumble_tag(name, sc, content = nil, attrs = nil, &blk)
-      if !@rumble_context
+      if !defined?(@rumble_context) || !@rumble_context
         raise Rumble::Error, "Must enclose tags in `rumble { ... }` block"
       end
 

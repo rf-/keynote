@@ -122,7 +122,7 @@ describe Keynote::Presenter do
   describe "#inspect" do
     it "includes the class name" do
       CombinedPresenter.new(:view, :a, :b).inspect.
-        must_match /^#<CombinedPresenter /
+        must_match(/^#<CombinedPresenter /)
     end
 
     it "shows .inspect output for each presented object" do
@@ -173,7 +173,7 @@ describe Keynote::Presenter do
       end
 
       err.wont_be_nil
-      err.message.must_match /Keynote::Presenter/
+      err.message.must_match(/Keynote::Presenter/)
     end
   end
 end

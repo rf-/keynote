@@ -24,6 +24,7 @@ class TestRumble < klass
   end
 
   def setup
+    @rumble_context = nil
     super
     assert_nil @rumble_context
   end

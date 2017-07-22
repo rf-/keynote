@@ -118,11 +118,10 @@ describe Keynote do
 
     describe "when there's no view context" do
       it "shouldn't cache" do
-        model_1 = Normal.new
-        model_2 = Normal.new
+        model = Normal.new
 
-        presented_1 = Keynote.present(nil, model_1)
-        presented_2 = Keynote.present(nil, model_1)
+        presented_1 = Keynote.present(nil, model)
+        presented_2 = Keynote.present(nil, model)
 
         presented_1.wont_be :equal?, presented_2
       end

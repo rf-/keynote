@@ -173,10 +173,10 @@ module Keynote
 
       private
 
-      def read_template(source_file, line)
+      def read_template(source_file, line_num)
         result = ""
 
-        File.foreach(source_file).drop(line).each do |line|
+        File.foreach(source_file).drop(line_num).each do |line|
           if line =~ COMMENTED_LINE
             result << $1 << "\n"
           else
@@ -228,7 +228,7 @@ module Keynote
 
           compile(view, view.class)
 
-          @source = nil if @virtual_path
+          @source = nil if defined?(@virtual_path) && @virtual_path
           @compiled = true
         end
       end
@@ -248,7 +248,7 @@ module Keynote
 
           compile(view.class)
 
-          @source = nil if @virtual_path
+          @source = nil if defined?(@virtual_path) && @virtual_path
           @compiled = true
         end
       end

@@ -26,7 +26,9 @@ module Keynote
       end
 
       # Initialize our cache on the view context if it doesn't already exist.
-      if (cache = view.instance_variable_get(:@_keynote_cache)).nil?
+      if view.instance_variable_defined?(:@_keynote_cache)
+        cache = view.instance_variable_get(:@_keynote_cache)
+      else
         cache = {}
         view.instance_variable_set(:@_keynote_cache, cache)
       end

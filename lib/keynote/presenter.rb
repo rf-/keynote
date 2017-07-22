@@ -34,7 +34,7 @@ module Keynote
         self.object_names = objects.dup
 
         objects.unshift :view
-        attr_reader *objects
+        attr_reader(*objects)
 
         param_list = objects.join(', ')
         ivar_list  = objects.map { |o| "@#{o}" }.join(', ')
