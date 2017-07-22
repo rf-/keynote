@@ -29,7 +29,7 @@ class UserPresenter < Keynote::Presenter
   end
 
   def profile_link
-    link_to user, display_name, data: {user_id: user.id}
+    link_to user, display_name, data: { user_id: user.id }
   end
 end
 ```
@@ -62,8 +62,8 @@ fragments. Here's a small example:
 
 ``` ruby
 build_html do
-  div :id => :content do
-    h1 'Hello World', :class => :main
+  div id: :content do
+    h1 'Hello World', class: :main
   end
 end
 ```
@@ -147,7 +147,7 @@ underlying objects, it's easy to do it explicitly with ActiveSupport's
 
 class UserPresenter < Keynote::Presenter
   presents :user
-  delegate :first_name, :last_name, :to => :user
+  delegate :first_name, :last_name, to: :user
 
   def display_name
     "#{first_name} #{last_name}"
@@ -156,7 +156,7 @@ end
 ```
 
 You can also generate prefixed methods like `user_first_name` by passing
-`:prefix => true` to the `delegate` method.
+`prefix: true` to the `delegate` method.
 
 ## Rationale
 
