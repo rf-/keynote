@@ -267,15 +267,8 @@ module Keynote
           content = nil
         end
 
-        # Flatten `data` hash into individual attributes if necessary
-        if attrs && attrs[:data].is_a?(Hash)
-          attrs = attrs.dup
-          attrs.delete(:data).each do |key, value|
-            next if value.nil?
-            attrs[:"data-#{key}"] = value.to_s
-          end
-        end
-
+        attrs = flatten_attr_hash(attrs, :aria)
+        attrs = flatten_attr_hash(attrs, :data)
         merge_attributes(attrs) if attrs
 
         if block_given?
@@ -321,6 +314,22 @@ module Keynote
       end
 
       def inspect; to_s.inspect end
+
+      private
+
+      # If the given attrs contain an `aria` or `data` hash, flatten its
+      # contents into hyphenated attribute names.
+      def flatten_attr_hash(attrs, name)
+        if attrs && attrs[name].is_a?(Hash)
+          attrs = attrs.dup
+          attrs.delete(name).each do |key, value|
+            next if value.nil?
+            attrs[:"#{name}-#{key}"] = value.to_s
+          end
+        end
+
+        attrs
+      end
 
       def attrs_to_s
         attributes.inject("") do |res, (name, value)|

@@ -81,6 +81,28 @@ class TestRumble < klass
     end
   end
 
+  def test_string_aria
+    assert_rumble '<div aria="whatever"></div>' do
+      div aria: "whatever"
+    end
+  end
+
+  def test_hash_aria
+    str = <<-HTML
+      <div aria-modal="true" aria-safe="&quot;&quot;&quot;" aria-unsafe="&quot;&amp;quot;&quot;">
+      </div>
+    HTML
+
+    assert_rumble str do
+      div aria: {
+        modal: true,
+        safe: '"&quot;"'.html_safe,
+        absent: nil,
+        unsafe: '"&quot;"'
+      }
+    end
+  end
+
   def test_array_attrs
     str = <<-HTML
       <div class="hello &quot;uns&amp;amp;fe&quot; &quot;w&amp;rld&quot;">
