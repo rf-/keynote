@@ -271,6 +271,7 @@ module Keynote
         if attrs && attrs[:data].is_a?(Hash)
           attrs = attrs.dup
           attrs.delete(:data).each do |key, value|
+            next if value.nil?
             attrs[:"data-#{key}"] = value.to_s
           end
         end
@@ -323,7 +324,7 @@ module Keynote
 
       def attrs_to_s
         attributes.inject("") do |res, (name, value)|
-          next unless value
+          next res unless value
 
           value =
             if value.is_a?(Array)

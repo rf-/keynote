@@ -72,7 +72,12 @@ class TestRumble < klass
     HTML
 
     assert_rumble str do
-      div data: { modal: true, safe: '"&quot;"'.html_safe, unsafe: '"&quot;"' }
+      div data: {
+        modal: true,
+        safe: '"&quot;"'.html_safe,
+        absent: nil,
+        unsafe: '"&quot;"'
+      }
     end
   end
 
@@ -84,6 +89,16 @@ class TestRumble < klass
 
     assert_rumble str do
       div class: ["hello", '"uns&amp;fe"', '"w&amp;rld"'.html_safe]
+    end
+  end
+
+  def test_nil_attr
+    str = <<-HTML
+      <div id="id" class="class"></div>
+    HTML
+
+    assert_rumble str do
+      div id: "id", title: nil, class: "class"
     end
   end
 
