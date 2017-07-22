@@ -267,6 +267,14 @@ module Keynote
           content = nil
         end
 
+        # Flatten `data` hash into individual attributes if necessary
+        if attrs && attrs[:data].is_a?(Hash)
+          attrs = attrs.dup
+          attrs.delete(:data).each do |key, value|
+            attrs[:"data-#{key}"] = value.to_s
+          end
+        end
+
         merge_attributes(attrs) if attrs
 
         if block_given?

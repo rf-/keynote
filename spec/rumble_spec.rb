@@ -59,6 +59,22 @@ class TestRumble < klass
     end
   end
 
+  def test_string_data
+    assert_rumble '<div data="whatever"></div>' do
+      div data: "whatever"
+    end
+  end
+
+  def test_hash_data
+    str = <<-HTML
+      <div data-modal="true" data-test="&quot;test&quot;"></div>
+    HTML
+
+    assert_rumble str do
+      div data: { modal: true, test: '"test"' }
+    end
+  end
+
   def test_several
     str = <<-HTML
       <p>Hello</p>
