@@ -67,11 +67,23 @@ class TestRumble < klass
 
   def test_hash_data
     str = <<-HTML
-      <div data-modal="true" data-test="&quot;test&quot;"></div>
+      <div data-modal="true" data-safe="&quot;&quot;&quot;" data-unsafe="&quot;&amp;quot;&quot;">
+      </div>
     HTML
 
     assert_rumble str do
-      div data: { modal: true, test: '"test"' }
+      div data: { modal: true, safe: '"&quot;"'.html_safe, unsafe: '"&quot;"' }
+    end
+  end
+
+  def test_array_attrs
+    str = <<-HTML
+      <div class="hello &quot;uns&amp;amp;fe&quot; &quot;w&amp;rld&quot;">
+      </div>
+    HTML
+
+    assert_rumble str do
+      div class: ["hello", '"uns&amp;fe"', '"w&amp;rld"'.html_safe]
     end
   end
 

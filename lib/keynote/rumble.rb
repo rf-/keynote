@@ -323,10 +323,18 @@ module Keynote
 
       def attrs_to_s
         attributes.inject("") do |res, (name, value)|
-          if value
-            value = (value == true) ? name : Rumble.html_escape(value)
-            res << " #{name}=\"#{value}\""
-          end
+          next unless value
+
+          value =
+            if value.is_a?(Array)
+              value.map { |val| Rumble.html_escape(val) }.join(" ")
+            elsif value == true
+              name
+            else
+              Rumble.html_escape(value)
+            end
+
+          res << " #{name}=\"#{value.gsub('"'.freeze, '&quot;'.freeze)}\""
           res
         end
       end
