@@ -1,3 +1,7 @@
+## v1.1.1
+* Rumble: Fix passing `true` as an attribute value, which was broken by the
+  escaping changes in v1.0.0. (@igas)
+
 ## v1.1.0
 * Rumble: Fix bug in v1.0.0 that caused an exception if the user passed a `nil`
   value for an attribute.
