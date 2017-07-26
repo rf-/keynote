@@ -339,7 +339,7 @@ module Keynote
             if value.is_a?(Array)
               value.map { |val| Rumble.html_escape(val) }.join(" ")
             elsif value == true
-              name
+              name.to_s
             else
               Rumble.html_escape(value)
             end
