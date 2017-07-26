@@ -65,6 +65,12 @@ class TestRumble < klass
     end
   end
 
+  def test_true_as_value
+    assert_rumble '<input disabled="disabled">' do
+      input disabled: true
+    end
+  end
+
   def test_hash_data
     str = <<-HTML
       <div data-modal="true" data-safe="&quot;&quot;&quot;" data-unsafe="&quot;&amp;quot;&quot;">
