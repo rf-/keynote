@@ -158,6 +158,43 @@ end
 You can also generate prefixed methods like `user_first_name` by passing
 `prefix: true` to the `delegate` method.
 
+## Testing
+
+Testing Keynote is the same as using it in views or controllers. It can be tested with RSpec, Test::Unit, MiniTest, or MiniTestUnit.
+
+### RSpec
+
+Tests are expected to be in `spec/presenters` or labeled with `type: :presenter` [metadata](https://relishapp.com/rspec/rspec-rails/docs/directory-structure). Here's an example:
+
+```ruby
+# spec/presenters/user_presenter_spec.rb
+
+RSpec.describe UserPresenter do
+  describe "#display_name" do
+    it "returns the name of the user" do
+      user = User.new(first_name: "Alice", last_name: "Smith")
+
+      expect(present(user).display_name).to eq("Alice Smith")
+    end
+  end
+end
+```
+
+### Test::Unit
+
+```ruby
+class UserPresenterTest < Keynote::TestCase
+  setup do
+    user = User.new(first_name: "Alice", last_name: "Smith")
+    @presenter = present(user)
+  end
+
+  test "display name" do
+    assert_equal @presenter.diaplay_name, "Alice Smith"
+  end
+end
+```
+
 ## Rationale
 
 ### Why use presenters or decorators at all?
