@@ -160,11 +160,15 @@ You can also generate prefixed methods like `user_first_name` by passing
 
 ## Testing
 
-Testing Keynote is the same as using it in views or controllers. It can be tested with RSpec, Test::Unit, MiniTest, or MiniTestUnit.
+Testing a Keynote presenter is similar to using it in views or controllers. You
+can test presenters with RSpec, Test::Unit, MiniTest, or MiniTest::Unit.
 
 ### RSpec
 
-Tests are expected to be in `spec/presenters` or labeled with `type: :presenter` [metadata](https://relishapp.com/rspec/rspec-rails/docs/directory-structure). Here's an example:
+Your test files should be in `spec/presenters` or labeled with
+[`type: :presenter` metadata].
+
+Here's an example:
 
 ```ruby
 # spec/presenters/user_presenter_spec.rb
@@ -180,7 +184,9 @@ RSpec.describe UserPresenter do
 end
 ```
 
-### Test::Unit
+### Test::Unit and MiniTest
+
+Your test classes should inherit from Keynote::TestCase.
 
 ```ruby
 class UserPresenterTest < Keynote::TestCase
@@ -190,7 +196,7 @@ class UserPresenterTest < Keynote::TestCase
   end
 
   test "display name" do
-    assert_equal @presenter.diaplay_name, "Alice Smith"
+    assert_equal @presenter.display_name, "Alice Smith"
   end
 end
 ```
@@ -291,3 +297,5 @@ projects.
 [Roadshow]: https://github.com/rf-/roadshow
 [Docker Compose]: https://docs.docker.com/compose/
 [get the Roadshow tool]: https://github.com/rf-/roadshow/releases
+[`type: :presenter` metadata]: https://relishapp.com/rspec/rspec-rails/docs/directory-structure
+
