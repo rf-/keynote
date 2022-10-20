@@ -105,9 +105,9 @@ module Keynote
     #       "#{h author.name} &mdash; #{h blog_post.title}".html_safe
     #     end
     #   end
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *args, **kwargs, &block)
       if @view.respond_to?(method_name, true)
-        @view.send(method_name, *args, &block)
+        @view.send(method_name, *args, **kwargs, &block)
       else
         super
       end
