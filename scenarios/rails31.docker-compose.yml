@@ -7,9 +7,10 @@ services:
       dockerfile: scenarios/rails31.dockerfile
     image: keynote_scenario_rails31
     volumes:
-    - "..:/scenario"
-    - "bundle_rails31:/usr/local/bundle"
+    - ..:/scenario
+    - bundle_rails31:/usr/local/bundle
     environment:
       BUNDLE_GEMFILE: scenarios/rails31.gemfile
+    links: []
 volumes:
   bundle_rails31: {}
